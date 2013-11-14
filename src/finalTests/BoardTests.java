@@ -14,7 +14,7 @@ public class BoardTests {
 	
 	@BeforeClass
 	public static void setUp() {
-		board = new Board ("boardConfig.txt");
+		board = new Board("boardConfig.txt");
 		board.loadBoardConfig();
 	}
 
