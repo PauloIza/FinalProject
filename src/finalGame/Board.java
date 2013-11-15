@@ -21,6 +21,14 @@ public class Board {
 		
 	}
 	
+	public ArrayList<Cell> getCells() {
+		return null;
+	}
+	
+	public Cell getCellAt(int index) {
+		return null;
+	}
+	
 	public int calcIndex(int row, int col) {
 		return 0;
 	}
