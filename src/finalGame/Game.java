@@ -37,4 +37,8 @@ public class Game {
 	public void saveGameStats() {
 		
 	}
+	
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
 }
