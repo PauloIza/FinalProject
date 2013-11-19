@@ -1,6 +1,8 @@
 package finalGame;
 
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Board {
 	private int numRows;
@@ -13,8 +15,14 @@ public class Board {
 		cells = new ArrayList<Cell>();
 	}
 	
-	public void loadBoardConfig() {
+	public void loadBoardConfig() throws Exception{
+		try{
+			FileReader reader = new FileReader(layout);
+			Scanner scn = new Scanner(reader);
+			
+		} catch(Exception e) {
 		
+		};
 	}
 	
 	public void calcAdjacencies() {
