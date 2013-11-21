@@ -61,7 +61,7 @@ public class Board {
 	}
 	
 	public ArrayList<Cell> getCells() {
-		return null;
+		return cells;
 	}
 	
 	public Cell getCellAt(int index) {
