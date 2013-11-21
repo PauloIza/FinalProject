@@ -5,13 +5,15 @@ import java.awt.Color;
 public class Player {
 	public boolean hasBall = false;
 	private String name;
-	private int[] stats;
+	private int[] stats = new int[2];
 	private String team;
 	private Color color;
 	private int jerseyNumber;
 	private int currentLocation;
 	
 	public Player(String name, int ballHandling, int strength, String team, int jerseyNumber) {
+		currentLocation = 0;
+		color = null;
 		this.name = name;
 		stats[0] = ballHandling;
 		stats[1] = strength;
