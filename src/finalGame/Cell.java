@@ -1,8 +1,18 @@
 package finalGame;
 
-public class Cell {
+public abstract class Cell {
 	private int row;
 	private int col;
+	
+	public Cell() {
+		super();
+	}
+	
+	public Cell(int row, int col) {
+		super();
+		this.row = row;
+		this.col = col;
+	}
 	
 	public boolean isGoal() {
 		return false;

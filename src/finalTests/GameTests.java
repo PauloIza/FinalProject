@@ -20,7 +20,6 @@ public class GameTests {
 	public static void setUp() {
 		board = new Board("boardConfig.csv");
 		board.loadBoardConfig();
-		
 		ball = new Ball();
 		
 		player1 = new Player("John", 85, 90, "Barcelona", 10);
@@ -38,8 +37,6 @@ public class GameTests {
 		assertEquals(game.getPlayers().get(1).getLocation(), board.calcIndex(5, 9));
 		assertEquals(game.getPlayers().get(2).getLocation(), board.calcIndex(8, 9));
 	}
-<<<<<<< HEAD
-=======
 	
 	//Tests player passing ball to teammate
 	@Test
@@ -63,6 +60,4 @@ public class GameTests {
 		
 		assertTrue(stealSuccess > 90 && stealSuccess < 100);
 	}
-	
->>>>>>> 409d3bc9f9c834cdda4b9ed5c1b3adc5d78614cb
 }
