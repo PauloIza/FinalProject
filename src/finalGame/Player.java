@@ -36,7 +36,7 @@ public class Player {
 	}
 	
 	public void setLocation(int index) {
-		
+		currentLocation = index;
 	}
 	
 	public int getLocation() {

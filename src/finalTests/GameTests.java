@@ -16,14 +16,16 @@ public class GameTests {
 	private static Game game;
 	private static Board board;
 	private static Ball ball;
+	private final static String TEAM1NAME = "Power Rangers";
+	private final static String TEAM2NAME = "Blue Lagoons";
 	
 	@BeforeClass
 	public static void setUp() {
-		board = new Board("boardConfig.csv");
+		board = new Board("board.csv");
 		board.loadBoardConfig();
 		ball = new Ball();
 		
-		game = new Game(board, ball, "testFormation1.csv", "players.txt");
+		game = new Game(board, ball, "formation.csv", "players.txt", TEAM1NAME, TEAM2NAME);
 		game.loadConfigFiles();
 	}
 	
@@ -35,6 +37,21 @@ public class GameTests {
 		assertTrue(game.getPlayers().get(1).getTeam().equals(Color.RED));
 		assertTrue(game.getPlayers().get(2).getStats()[0] == 95);
 		assertTrue(game.getPlayers().get(3).getJerseyNumber() == 9);
+	}
+	
+	//Tests that teams are properly set up
+	@Test
+	public void testTeams() {
+		assertTrue(game.getTeam1().getTeamName().equals(TEAM1NAME));
+		assertTrue(game.getTeam2().getTeam().get(0).getName().equals("Jacob"));
+	}
+	
+	//Tests that the players on/in the teams are starting in the correct place (formation test)
+	@Test
+	public void testFormationStart() {
+		assertEquals(game.getTeam1().getTeam().get(0).getLocation(), board.calcIndex(10,1));
+		assertEquals(game.getTeam2().getTeam().get(1).getLocation(), board.calcIndex(11,26));
+		
 	}
 	
 	//Tests that players end at the right point
