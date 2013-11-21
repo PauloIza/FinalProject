@@ -31,7 +31,9 @@ public class Board {
 				
 				for(String cell : line) {
 					if(cell.equalsIgnoreCase("f")) {
-						cells.add(new FieldCell(numRows, columnCount++));
+						cells.add(new FieldCell(numRows, columnCount++, false));
+					} else if(cell.equalsIgnoreCase("c")) {
+						cells.add(new FieldCell(numRows, columnCount++, true));
 					} else if(cell.equalsIgnoreCase("g")) {
 						cells.add(new GoalCell(numRows, columnCount++));
 					} else if(cell.equalsIgnoreCase("o")) {
@@ -65,7 +67,7 @@ public class Board {
 	}
 	
 	public Cell getCellAt(int index) {
-		return null;
+		return cells.get(index);
 	}
 	
 	public int calcIndex(int row, int col) {

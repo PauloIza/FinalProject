@@ -46,21 +46,21 @@ public class BoardTests {
 	//Tests to make sure the corners of the field are labeled as such
 	@Test
 	public void testCorners() {
-		assertTrue(board.getCellAt(board.calcIndex(1, 1)).isCorner());
-		assertTrue(board.getCellAt(board.calcIndex(1, 10)).isCorner());
-		assertTrue(board.getCellAt(board.calcIndex(10, 1)).isCorner());
-		assertTrue(board.getCellAt(board.calcIndex(9, 10)).isCorner());
+		assertTrue(board.getCellAt(board.calcIndex(0, 1)).isCorner());
+		assertTrue(board.getCellAt(board.calcIndex(0, 3)).isCorner());
+		assertTrue(board.getCellAt(board.calcIndex(8, 1)).isCorner());
+		assertTrue(board.getCellAt(board.calcIndex(8, 3)).isCorner());
 	}
 	
 	//Tests to make sure the goals are labeled as such
 	@Test
 	public void testGoal() {
+		assertTrue(board.getCellAt(board.calcIndex(3, 0)).isGoal());
 		assertTrue(board.getCellAt(board.calcIndex(4, 0)).isGoal());
 		assertTrue(board.getCellAt(board.calcIndex(5, 0)).isGoal());
-		assertTrue(board.getCellAt(board.calcIndex(6, 0)).isGoal());
-		assertTrue(board.getCellAt(board.calcIndex(4, 11)).isGoal());
-		assertTrue(board.getCellAt(board.calcIndex(5, 11)).isGoal());
-		assertTrue(board.getCellAt(board.calcIndex(6, 11)).isGoal());
+		assertTrue(board.getCellAt(board.calcIndex(3, 4)).isGoal());
+		assertTrue(board.getCellAt(board.calcIndex(4, 4)).isGoal());
+		assertTrue(board.getCellAt(board.calcIndex(5, 4)).isGoal());
 	}
 	
 	//Tests to make sure out of bounds cells (labeled X) are labeled as such
