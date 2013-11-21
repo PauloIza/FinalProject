@@ -31,10 +31,12 @@ public class Game {
 			
 			while(scn.hasNextLine()) {
 				String line[] = scn.nextLine().split(",");
+				System.out.println(line[3]);
 				int handleStat = Integer.parseInt(line[1]);
 				int strengthStat = Integer.parseInt(line[2]);
 				int jerseyNum = Integer.parseInt(line[4]);
 				Player person = new Player(line[0], handleStat, strengthStat, line[3], jerseyNum);
+				players.add(person);
 			} 
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());

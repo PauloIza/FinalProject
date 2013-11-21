@@ -2,6 +2,8 @@ package finalTests;
 
 import static org.junit.Assert.*;
 
+import java.awt.Color;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -14,7 +16,6 @@ public class GameTests {
 	private static Game game;
 	private static Board board;
 	private static Ball ball;
-	private static Player player1, player2, player3;
 	
 	@BeforeClass
 	public static void setUp() {
@@ -22,11 +23,18 @@ public class GameTests {
 		board.loadBoardConfig();
 		ball = new Ball();
 		
-		player1 = new Player("John", 85, 90, "Barcelona", 10);
-		player2 = new Player("James", 75, 95, "Barcelona", 14);
-		player3 = new Player("Jacob", 95, 75, "Chelsea", 23);
-		game = new Game(board, ball, "testFormation1.csv", "testPlay1.csv");
+		game = new Game(board, ball, "testFormation1.csv", "players.txt");
 		game.loadConfigFiles();
+	}
+	
+	//Tests that players are properly loaded
+	@Test
+	public void testPlayers() {
+		assertTrue(game.getPlayers().get(0).getName().equals("John"));
+		System.out.println(game.getPlayers().get(1).getTeam());
+		assertTrue(game.getPlayers().get(1).getTeam().equals(Color.RED));
+		assertTrue(game.getPlayers().get(2).getStats()[0] == 95);
+		assertTrue(game.getPlayers().get(3).getJerseyNumber() == 9);
 	}
 	
 	//Tests that players end at the right point
