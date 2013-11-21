@@ -66,7 +66,7 @@ public class BoardTests {
 	//Tests to make sure out of bounds cells (labeled X) are labeled as such
 	@Test
 	public void testOutOfBounds() {
-		assertFalse(board.getCellAt(board.calcIndex(0, 2)).isField());
-		assertFalse(board.getCellAt(board.calcIndex(9, 11)).isField());
+		assertFalse(board.getCellAt(board.calcIndex(0, 0)).isField());
+		assertFalse(board.getCellAt(board.calcIndex(7, 4)).isField());
 	}
 }
