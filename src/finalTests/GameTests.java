@@ -58,28 +58,29 @@ public class GameTests {
 	@Test
 	public void testMove() {
 		game.runGamePlay();
-		assertEquals(game.getPlayers().get(0).getLocation(), board.calcIndex(2, 9));
-		assertEquals(game.getPlayers().get(1).getLocation(), board.calcIndex(5, 9));
-		assertEquals(game.getPlayers().get(2).getLocation(), board.calcIndex(8, 9));
+		System.out.println(game.getPlayers().get(0).getLocation());
+		assertEquals(game.getPlayers().get(0).getLocation(), board.calcIndex(10, 1));
+		assertEquals(game.getPlayers().get(1).getLocation(), board.calcIndex(11, 1));
+//		assertEquals(game.getPlayers().get(2).getLocation(), board.calcIndex(10, 26));
 	}
 	
 	//Tests player passing ball to teammate
 	@Test
 	public void testPassBall() {
-		player1.hasBall = true;
-		player1.passBall(player2);
-		assertFalse(player1.hasBall);
-		assertTrue(player2.hasBall);
+		game.getPlayers().get(0).hasBall = true;
+		game.getPlayers().get(0).passBall(game.getPlayers().get(1));
+		assertFalse(game.getPlayers().get(0).hasBall);
+		assertTrue(game.getPlayers().get(1).hasBall);
 	}
 	
 	//Tests player attempting to steal ball
 	@Test
 	public void testStealBall() {
 		int stealSuccess = 0;
-		player1.hasBall = true;
+		game.getPlayers().get(1).hasBall = true;
 		for (int i = 0; i < 100; i++) {
-			player3.stealBall();
-			if (player3.hasBall)
+			game.getPlayers().get(2).stealBall();
+			if (game.getPlayers().get(2).hasBall)
 				stealSuccess++;
 		}
 		

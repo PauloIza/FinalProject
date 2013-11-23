@@ -64,12 +64,15 @@ public class Player {
 	}
 	
 	public void passBall(Player passTo) {
-		
+		passTo.hasBall = true;
+		hasBall = false;
 	}
 	
 	//steal success is based off ballHandling stat of player who has the ball, and the player attempting to steal
 	//currently (in tests) is steal chance = stealing player ballHandling % (eg 95 ballHandling = 95% chance of steal)
 	public void stealBall() {
-		
+		if (hasBall == true) {
+			
+		}
 	}
 }
