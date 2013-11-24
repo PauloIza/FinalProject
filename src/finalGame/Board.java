@@ -93,6 +93,7 @@ public class Board {
 						}
 					}
 					
+					
 					if(i+1 < numRows) {
 						Cell southCell = cells.get(calcIndex(i+1, j));
 						
@@ -114,6 +115,38 @@ public class Board {
 						
 						if(!westCell.isOutOfBounds()) {
 							adjacencies.add(calcIndex(i,j+1));
+						}
+					}
+					
+					if(i-1 >= 0 && j-1 >= 0) {
+						Cell diagonalCell = cells.get(calcIndex(i-1, j-1));
+						
+						if(!diagonalCell.isOutOfBounds()) {
+							adjacencies.add(calcIndex(i-1,j-1));
+						}
+					}
+					
+					if(i-1 >= 0 && j+1 < numCols) {
+						Cell diagonalCell = cells.get(calcIndex(i-1, j+1));
+						
+						if(!diagonalCell.isOutOfBounds()) {
+							adjacencies.add(calcIndex(i-1,j+1));
+						}
+					}
+					
+					if(i+1 < numRows && j-1 >= 0) {
+						Cell diagonalCell = cells.get(calcIndex(i+1, j-1));
+						
+						if(!diagonalCell.isOutOfBounds()) {
+							adjacencies.add(calcIndex(i+1,j-1));
+						}
+					}
+					
+					if(i+1 < numRows && j+1 < numCols) {
+						Cell diagonalCell = cells.get(calcIndex(i+1, j+1));
+						
+						if(!diagonalCell.isOutOfBounds()) {
+							adjacencies.add(calcIndex(i+1,j+1));
 						}
 					}
 				}

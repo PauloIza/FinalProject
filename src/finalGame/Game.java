@@ -2,7 +2,9 @@ package finalGame;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Game {
@@ -12,6 +14,7 @@ public class Game {
 	private ArrayList<Player> players;
 	private Team team1, team2;
 	private boolean playGame;
+	private int currentPlayer;
 	
 	public Game (Board board, Ball ball, String formation, String playerFile, String team1, String team2) {
 		this.board = board;
@@ -22,6 +25,7 @@ public class Game {
 		this.team2 = new Team(team2);
 		players = new ArrayList<Player>();
 		playGame = false;
+		currentPlayer = 0;
 	}
 	
 	public void loadConfigFiles() {
@@ -99,7 +103,17 @@ public class Game {
 	}
 	
 	public void move() {
+		Player tempPlayer = team1.getTeam().get(currentPlayer);
+		int playerLocation = tempPlayer.getLocation();
+		LinkedList<Integer> playerAdjacencies = board.getAdjacencyList(playerLocation);
+		ArrayList<Cell> playerAdjacentCells = new ArrayList<Cell>();
 		
+		for(int i : playerAdjacencies) {
+			playerAdjacentCells.add(board.getCellAt(i));
+		}
+
+		
+		tempPlayer.move(playerAdjacentCells, ball.getLocation());
 	}
 	
 	public void saveGameStats() {

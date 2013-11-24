@@ -14,4 +14,8 @@ public class Ball {
 	public void updateLocation() {
 		
 	}
+	
+	public int getLocation() {
+		return currentLocation;
+	}
 }

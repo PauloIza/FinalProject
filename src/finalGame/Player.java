@@ -2,17 +2,19 @@ package finalGame;
 
 import java.awt.Color;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Player {
 	public boolean hasBall = false;
-	private String name;
-	private int[] stats = new int[2];
-	private String team;
+	private String name, team;
+	private int[] stats;
 	private Color teamColor;
-	private int jerseyNumber;
-	private int currentLocation;
+	private int jerseyNumber, currentLocation;
+	private Cell ballCell;
 	
 	public Player(String name, int ballHandling, int strength, String color, int jerseyNumber) {
+		stats = new int[2];
 		currentLocation = 0;
 		this.name = name;
 		stats[0] = ballHandling;
@@ -58,8 +60,14 @@ public class Player {
 		return jerseyNumber;
 	}
 
-	public void move() {
+	public void move(ArrayList<Cell> moveableCells, Cell ballCell) {
+		this.ballCell = ballCell;
+		ArrayList<Cell> targetList = new ArrayList<Cell>(moveableCells);
 		
+		//
+		for (Cell target : moveableCells) {
+			if()
+		}
 	}
 	
 	public void passBall(Player passTo) {
