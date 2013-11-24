@@ -16,6 +16,7 @@ public class BoardTests {
 	public static void setUp() throws Exception {
 		board = new Board("board.csv");
 		board.loadBoardConfig();
+		board.calcAdjacencies();
 	}
 
 	//Test that the rows and columns of the board are equal to the known row and column values
@@ -74,5 +75,15 @@ public class BoardTests {
 	public void testOutOfBounds() {
 		assertFalse(board.getCellAt(board.calcIndex(0, 0)).isField());
 		assertFalse(board.getCellAt(board.calcIndex(6, 27)).isField());
+	}
+	
+	//Tests to make sure the calcAdjacencies method works
+	@Test
+	public void testAdjacencies() {
+		assertTrue(board.getAdjacencyList(board.calcIndex(1,1)).contains(board.calcIndex(1,2)));
+		assertTrue(board.getAdjacencyList(board.calcIndex(20,26)).contains(board.calcIndex(20,25)));
+		assertFalse(board.getAdjacencyList(board.calcIndex(1,1)).contains(board.calcIndex(0,1)));
+		
+		assertTrue(board.getAdjacencyList(board.calcIndex(9,1)).contains(board.calcIndex(9,0)));
 	}
 }

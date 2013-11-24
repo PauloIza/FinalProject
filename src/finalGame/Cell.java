@@ -25,4 +25,8 @@ public abstract class Cell {
 	public boolean isField() {
 		return false;
 	}
+	
+	public boolean isOutOfBounds() {
+		return false;
+	}
 }

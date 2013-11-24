@@ -9,4 +9,27 @@ public class OutOfBoundsCell extends Cell {
 		super(row, col);
 	}
 
+	@Override
+	public boolean isGoal() {
+		
+		return super.isGoal();
+	}
+
+	@Override
+	public boolean isCorner() {
+		
+		return super.isCorner();
+	}
+
+	@Override
+	public boolean isField() {
+		
+		return super.isField();
+	}
+
+	@Override
+	public boolean isOutOfBounds() {
+		return true;
+	}
+
 }

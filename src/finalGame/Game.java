@@ -11,6 +11,7 @@ public class Game {
 	private Ball ball;
 	private ArrayList<Player> players;
 	private Team team1, team2;
+	private boolean playGame;
 	
 	public Game (Board board, Ball ball, String formation, String playerFile, String team1, String team2) {
 		this.board = board;
@@ -20,6 +21,7 @@ public class Game {
 		this.team1 = new Team(team1);
 		this.team2 = new Team(team2);
 		players = new ArrayList<Player>();
+		playGame = false;
 	}
 	
 	public void loadConfigFiles() {
@@ -34,7 +36,6 @@ public class Game {
 			
 			while(scn.hasNextLine()) {
 				String line[] = scn.nextLine().split(",");
-				System.out.println(line[3]);
 				int handleStat = Integer.parseInt(line[1]);
 				int strengthStat = Integer.parseInt(line[2]);
 				int jerseyNum = Integer.parseInt(line[4]);
@@ -92,7 +93,9 @@ public class Game {
 //	}
 	
 	public void runGamePlay() {
-		
+		while(playGame) {
+			
+		}
 	}
 	
 	public void move() {

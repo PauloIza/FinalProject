@@ -17,7 +17,6 @@ public class Player {
 		this.name = name;
 		stats[0] = ballHandling;
 		stats[1] = strength;
-		System.out.println(color);
 		this.teamColor = convertColor(color);
 		this.jerseyNumber = jerseyNumber;
 	}
