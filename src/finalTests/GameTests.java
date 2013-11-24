@@ -51,6 +51,7 @@ public class GameTests {
 	public void testFormationStart() {
 		assertEquals(game.getTeam1().getTeam().get(0).getLocation(), board.calcIndex(10,1));
 		assertEquals(game.getTeam2().getTeam().get(1).getLocation(), board.calcIndex(11,26));
+		assertEquals(game.getBall().getLocation(), board.calcIndex(10, 11));
 		
 	}
 	
@@ -73,17 +74,43 @@ public class GameTests {
 		assertTrue(game.getPlayers().get(1).hasBall);
 	}
 	
+	//Tests the ball's isNear function
+	@Test
+	public void testIsNear() {
+		Ball testBall = new Ball();
+		testBall.setLocation(board.calcIndex(10,11));
+		Player testPlayer = new Player("Tester", 90, 80, "PINK", 1);
+		//testPlayer location is currently 0,0;
+		assertFalse(testBall.isNear(testPlayer.getLocation()));
+		//Move to 10,10
+		testPlayer.setLocation(board.calcIndex(10, 10));
+		assertTrue(testBall.isNear(testPlayer.getLocation()));
+		//Move to 9,10
+		testPlayer.setLocation(board.calcIndex(9, 10));
+		assertTrue(testBall.isNear(testPlayer.getLocation()));
+	}
+	
 	//Tests player attempting to steal ball
 	@Test
 	public void testStealBall() {
 		int stealSuccess = 0;
-		game.getPlayers().get(1).hasBall = true;
+		Player testPlayer = new Player("Tester", 90, 80, "PINK", 1);
+		Ball testBall = new Ball();
+		testBall.setLocation(board.calcIndex(10,11));
+		
+		//Player is at 0,0; Ball at 10,11
+		//Player should not be able to steal the ball
+		testPlayer.stealBall(testBall);
+		assertFalse(testPlayer.hasBall);
+		
+		testPlayer.setLocation(board.calcIndex(10, 10));
 		for (int i = 0; i < 100; i++) {
-			game.getPlayers().get(2).stealBall();
-			if (game.getPlayers().get(2).hasBall)
+			testPlayer.stealBall(testBall);
+			if (testPlayer.hasBall)
 				stealSuccess++;
 		}
-		
-		assertTrue(stealSuccess > 90 && stealSuccess < 100);
+		System.out.println(stealSuccess);
+		//since testPlayer's ballHandling is 90, they should steal AROUND 45% of the time
+		assertTrue(stealSuccess > 35 && stealSuccess < 55);
 	}
 }
