@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Player {
 	public boolean hasBall = false;
@@ -60,13 +61,15 @@ public class Player {
 		return jerseyNumber;
 	}
 
-	public void move(ArrayList<Cell> moveableCells, Cell ballCell) {
-		this.ballCell = ballCell;
+	public void move(ArrayList<Cell> moveableCells, int ballCell) {
+//		this.ballCell = ballCell;
 		ArrayList<Cell> targetList = new ArrayList<Cell>(moveableCells);
 		
-		//
+		// this must be modified so that if the player can move onto the ball and steal it,
+		// they do. otherwise, the move method checks to see where the ball is and moves toward it
+		// whether that is along a row, column, or even diagonal (they can move on diagonals the way it is currently set up)
 		for (Cell target : moveableCells) {
-			if()
+//			if()
 		}
 	}
 	
@@ -75,11 +78,21 @@ public class Player {
 		hasBall = false;
 	}
 	
-	//steal success is based off ballHandling stat of player who has the ball, and the player attempting to steal
-	//currently (in tests) is steal chance = stealing player ballHandling % (eg 95 ballHandling = 95% chance of steal)
-	public void stealBall() {
-		if (hasBall == true) {
+	//steal success is based off ballHandlingof the player attempting to steal and distance from ball
+	//currently, the player has a .5*ballHandling % chance of stealing
+	public void stealBall(Ball ball) {
+		if (ball.isNear(currentLocation)) {
+			//randomly generates a number 0-100, if that number is less than .5*ballHandling of the player, they successfully stole the ball
+			Random rand = new Random();
+			int stealChance = rand.nextInt(100);
+			if ((stealChance < (stats[0]/2)) && (stealChance > 0)) {
+				hasBall = true;
+			} else {
+				hasBall = false;
+			}
 			
+		} else {
+			hasBall = false;
 		}
 	}
 }

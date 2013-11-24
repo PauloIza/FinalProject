@@ -61,7 +61,7 @@ public class Game {
 			Scanner scn = new Scanner(new FileReader(formationFile));
 			int i = 0;
 			int j = 0;
-			int columnCount;
+			int columnCount = 0;
 			int rowCount = 0;
 			int tempLoc;
 			
@@ -69,7 +69,6 @@ public class Game {
 				String line[] = scn.nextLine().split(",");
 				columnCount = 0;
 				tempLoc = 0;
-				
 				for(String cell : line) {
 					tempLoc = board.calcIndex(rowCount, columnCount);
 					if(cell.equalsIgnoreCase("a")) {
@@ -78,8 +77,9 @@ public class Game {
 					} else if(cell.equalsIgnoreCase("b")) {
 						team2.getTeam().get(j).setLocation(tempLoc);
 						j++;
+					} else if(cell.equalsIgnoreCase("s")) {
+						ball.setLocation(tempLoc);
 					}
-					
 					columnCount++;
 				}
 				
@@ -130,5 +130,9 @@ public class Game {
 
 	public Team getTeam2() {
 		return team2;
+	}
+	
+	public Ball getBall() {
+		return ball;
 	}
 }
