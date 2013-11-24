@@ -1,0 +1,4 @@
+John,85,90,RED,10
+James,75,95,RED,14
+Jacob,95,75,BLUE,23
+Jane,90,70,BLUE,9
