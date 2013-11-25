@@ -1,5 +1,8 @@
 package finalGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 public class OutOfBoundsCell extends Cell {
 
 	public OutOfBoundsCell() {
@@ -30,6 +33,15 @@ public class OutOfBoundsCell extends Cell {
 	@Override
 	public boolean isOutOfBounds() {
 		return true;
+	}
+	
+	@Override
+	void draw(Graphics g, Board b) {
+		int x = getCol()*getSize();
+		int y = getRow()*getSize();
+		
+		g.setColor(Color.GRAY);
+		g.fillRect(x, y, getSize(), getSize());
 	}
 
 }

@@ -28,10 +28,6 @@ public class Ball {
 		else
 			return false;
 	}
-	
-	public int getLocation() {
-		return currentLocation;
-	}
 
 	public void setLocation(int currentLocation) {
 		this.currentLocation = currentLocation;

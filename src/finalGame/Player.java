@@ -61,15 +61,25 @@ public class Player {
 		return jerseyNumber;
 	}
 
-	public void move(ArrayList<Cell> moveableCells, int ballCell) {
+	public void move(ArrayList<Cell> moveableCells, Board board, Ball ball) {
 //		this.ballCell = ballCell;
 		ArrayList<Cell> targetList = new ArrayList<Cell>(moveableCells);
 		
 		// this must be modified so that if the player can move onto the ball and steal it,
 		// they do. otherwise, the move method checks to see where the ball is and moves toward it
 		// whether that is along a row, column, or even diagonal (they can move on diagonals the way it is currently set up)
+		
+		//So here's what I did. eDistanceBetween returns the straight line distance between 2 points. If the player is next to the ball, he attempts to steal
+		//if he is not next to the ball, he checks to see if the target cell is closer to the ball and moves to it if he is, otherwise, he looks to the next target
 		for (Cell target : moveableCells) {
-//			if()
+			int targetIndex = board.calcIndex(target.getRow(), target.getCol());
+			if(ball.isNear(currentLocation)) {
+				stealBall(ball);
+			} else {
+				if (board.eDistanceBetween(targetIndex, ball.getLocation()) < board.eDistanceBetween(currentLocation, ball.getLocation())) {
+					setLocation(targetIndex);
+				}
+			}
 		}
 	}
 	

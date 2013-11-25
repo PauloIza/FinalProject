@@ -1,5 +1,7 @@
 package finalGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -8,7 +10,12 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Board {
+import javax.swing.JPanel;
+
+import finalGame.Cell;
+import finalGame.Player;
+
+public class Board extends JPanel {
 	private int numRows;
 	private int numCols;
 	private String layout;
@@ -28,7 +35,6 @@ public class Board {
 		try{
 			FileReader reader = new FileReader(layout);
 			Scanner scn = new Scanner(reader);
-			
 			while(scn.hasNextLine()) {
 				String line[] = scn.nextLine().split(",");
 				int columnCount = 0;
@@ -43,7 +49,6 @@ public class Board {
 					} else if(cell.equalsIgnoreCase("o")) {
 						cells.add(new OutOfBoundsCell(numRows, columnCount++));
 					}
-					
 				}
 				
 				if(numRows == 0) {
@@ -167,6 +172,16 @@ public class Board {
 	public int calcIndex(int row, int col) {
 		return (numCols*row + col);
 	}
+	
+	public int getRow(int index) {
+		int row = index / numCols;
+		return row;
+	}
+	
+	public int getCol(int index) {
+		int column = index % numCols;
+		return column;
+	}
 
 	public int getNumRows() {
 		return numRows;
@@ -178,5 +193,31 @@ public class Board {
 	
 	public LinkedList<Integer> getAdjacencyList(int location) {
 		return adjacentCells.get(location);
+	}
+	
+	//Calculates Euclidean(straight line) distance between 2 indices	
+	public double eDistanceBetween(int current, int target) {
+		int targetRow = getRow(target);
+		int targetCol = getCol(target);
+		int currentRow = getRow(current);
+		int currentCol = getCol(current);
+
+		double a = Math.abs(targetRow - currentRow);
+		double b = Math.abs(targetCol - currentCol);
+
+		double c = Math.sqrt((Math.pow(a, 2)) + Math.pow(b, 2));
+		
+		return c;
+	}
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(0, 0, 600, 600);
+		for (Cell c : cells){
+			c.draw(g, this);
+		}
+		g.setColor(Color.BLACK);
+		g.drawRect(0, 0, 600, 600);
 	}
 }

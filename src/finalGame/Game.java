@@ -1,5 +1,9 @@
 package finalGame;
 
+import java.awt.Component;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Array;
@@ -7,10 +11,17 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class Game {
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+public class Game extends JFrame {
 	private String formationFile, playerFile, playFile;
-	private Board board;
-	private Ball ball;
+	private static Board board;
+	private static Ball ball;
 	private ArrayList<Player> players;
 	private Team team1, team2;
 	private boolean playGame;
@@ -26,6 +37,61 @@ public class Game {
 		players = new ArrayList<Player>();
 		playGame = false;
 		currentPlayer = 0;
+		
+		JPanel topPanel = new JPanel();
+		JPanel botPanel = new JPanel();
+		topPanel.setLayout(new GridLayout(1,2));
+		topPanel.setSize(600,600);
+		//botPanel.setLayout(new GridLayout(1,1));
+		//botPanel.setSize(100,500);
+		setLayout(new GridLayout(2,0));
+		
+		board.loadBoardConfig();
+		board.calcAdjacencies();
+		
+		topPanel.add(board);
+		
+		add(topPanel);
+		//add(botPanel);
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		menuBar.add(createFileMenu());
+		menuBar.add(createFormationMenu());
+		menuBar.add(createStatsMenu());
+		
+		setSize(800,800);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+	}
+	
+	private JMenu createFileMenu() {
+		JMenu menu = new JMenu("File");
+		JMenu menu2 = new JMenu("Formations");
+		JMenu menu3 = new JMenu("Game Stats");
+		menu.add(createFileExit());
+		return menu;
+	}
+	
+	private JMenu createFormationMenu() {
+		JMenu menu = new JMenu("Formations");
+		return menu;
+	}
+	
+	private JMenu createStatsMenu() {
+		JMenu menu = new JMenu("Game Stats");
+		return menu;
+	}
+	
+	private JMenuItem createFileExit() {
+		JMenuItem item = new JMenuItem("Exit");
+		class MenuItemListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		}	
+		item.addActionListener(new MenuItemListener());
+		return item;
 	}
 	
 	public void loadConfigFiles() {
@@ -113,8 +179,7 @@ public class Game {
 		}
 
 		
-		tempPlayer.move(playerAdjacentCells, ball.getLocation());
-	}
+		tempPlayer.move(playerAdjacentCells, board, ball);	}
 	
 	public void saveGameStats() {
 		
@@ -134,5 +199,11 @@ public class Game {
 	
 	public Ball getBall() {
 		return ball;
+	}
+	
+	public static void main(String[] args) {
+		board = new Board("board.csv");
+		ball = new Ball();
+		Game game = new Game(board, ball, "formation.csv", "players.txt", "Chelsea", "Barcelona");
 	}
 }
