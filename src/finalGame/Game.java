@@ -1,6 +1,8 @@
 package finalGame;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,12 +13,17 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 public class Game extends JFrame {
 	private String formationFile, playerFile, playFile;
@@ -26,6 +33,9 @@ public class Game extends JFrame {
 	private Team team1, team2;
 	private boolean playGame;
 	private int currentPlayer;
+	private JPanel statsPanel;
+	private JButton runPlay;
+	private JPanel teamFormation;
 	
 	public Game (Board board, Ball ball, String formation, String playerFile, String team1, String team2) {
 		this.board = board;
@@ -37,22 +47,30 @@ public class Game extends JFrame {
 		players = new ArrayList<Player>();
 		playGame = false;
 		currentPlayer = 0;
-		
+		statsPanel = statsDisplayPanel();
+		runPlay = new JButton("GO!");
+		teamFormation = new JPanel();
 		JPanel topPanel = new JPanel();
 		JPanel botPanel = new JPanel();
 		topPanel.setLayout(new GridLayout(1,2));
-		topPanel.setSize(600,600);
-		//botPanel.setLayout(new GridLayout(1,1));
-		//botPanel.setSize(100,500);
+		topPanel.setMaximumSize(new Dimension(1135, 32767));
+	    topPanel.setMinimumSize(new Dimension(1135, 440));
+		topPanel.setPreferredSize(new Dimension(1135,500));
+		botPanel.setLayout(new GridLayout(1,1));
+		botPanel.setMaximumSize(new Dimension(1135, 100));
+	    botPanel.setMinimumSize(new Dimension(1135, 50));
+		botPanel.setPreferredSize(new Dimension(1135, 60));
 		setLayout(new GridLayout(2,0));
 		
 		board.loadBoardConfig();
 		board.calcAdjacencies();
 		
 		topPanel.add(board);
-		
-		add(topPanel);
-		//add(botPanel);
+		topPanel.add(statsPanel);
+		botPanel.add(teamFormation);
+		botPanel.add(runPlay);
+		add(topPanel, BorderLayout.NORTH);
+		add(botPanel, BorderLayout.SOUTH);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -60,7 +78,7 @@ public class Game extends JFrame {
 		menuBar.add(createFormationMenu());
 		menuBar.add(createStatsMenu());
 		
-		setSize(800,800);
+		setSize(1135,1500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
@@ -81,6 +99,35 @@ public class Game extends JFrame {
 	private JMenu createStatsMenu() {
 		JMenu menu = new JMenu("Game Stats");
 		return menu;
+	}
+	
+	private JPanel statsDisplayPanel() {
+		JPanel statsDisplayPanel = new JPanel();
+		
+		statsDisplayPanel.setLayout(new GridLayout(4,1));
+		
+		JLabel stats = new JLabel("Team Stats");
+		statsDisplayPanel.add(stats);
+		
+		JPanel player1Panel = new JPanel();
+		player1Panel.setLayout(new GridLayout(1,2));
+		
+		player1Panel.setBorder(new TitledBorder (new EtchedBorder(), "Player 1"));
+		statsDisplayPanel.add(player1Panel);
+		
+		JPanel player2Panel = new JPanel();
+		player2Panel.setLayout(new GridLayout(1,2));
+		
+		player2Panel.setBorder(new TitledBorder (new EtchedBorder(), "Player 2"));
+		statsDisplayPanel.add(player2Panel);
+		
+		JPanel player3Panel = new JPanel();
+		player3Panel.setLayout(new GridLayout(1,2));
+		
+		player3Panel.setBorder(new TitledBorder (new EtchedBorder(), "Player 3"));
+		statsDisplayPanel.add(player3Panel);
+		
+		return statsDisplayPanel;
 	}
 	
 	private JMenuItem createFileExit() {
