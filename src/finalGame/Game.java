@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Array;
@@ -14,6 +15,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -37,9 +39,15 @@ public class Game extends JFrame {
 	private JButton runPlay;
 	private JPanel teamFormation;
 	
-	public Game (Board board, Ball ball, String formation, String playerFile, String team1, String team2) {
-		this.board = board;
-		this.ball = ball;
+	public Game (String boardFileName, Ball ball, String formation, String playerFile, String team1, String team2) {
+		
+		setSize(1135,750);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		
+		this.board = new Board(boardFileName);
+		board.loadBoardConfig();
+		board.calcAdjacencies();
 		this.formationFile = formation;
 		this.playerFile = playerFile;
 		this.team1 = new Team(team1);
@@ -47,23 +55,35 @@ public class Game extends JFrame {
 		players = new ArrayList<Player>();
 		playGame = false;
 		currentPlayer = 0;
+		
+		loadConfigFiles();
+
+		this.ball = ball;
+		board.setPlayerList(players);
+		board.setBall(ball);
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		menuBar.add(createFileMenu());
+		menuBar.add(createFormationMenu());
+		menuBar.add(createStatsMenu());
+		
 		statsPanel = statsDisplayPanel();
 		runPlay = new JButton("GO!");
+		
 		teamFormation = new JPanel();
 		JPanel topPanel = new JPanel();
 		JPanel botPanel = new JPanel();
+		
 		topPanel.setLayout(new GridLayout(1,2));
-		topPanel.setMaximumSize(new Dimension(1135, 32767));
-	    topPanel.setMinimumSize(new Dimension(1135, 440));
+		topPanel.setMaximumSize(new Dimension(1135, 1000));
+	    topPanel.setMinimumSize(new Dimension(1135, 450));
 		topPanel.setPreferredSize(new Dimension(1135,500));
 		botPanel.setLayout(new GridLayout(1,1));
 		botPanel.setMaximumSize(new Dimension(1135, 100));
 	    botPanel.setMinimumSize(new Dimension(1135, 50));
 		botPanel.setPreferredSize(new Dimension(1135, 60));
 		setLayout(new GridLayout(2,0));
-		
-		board.loadBoardConfig();
-		board.calcAdjacencies();
 		
 		topPanel.add(board);
 		topPanel.add(statsPanel);
@@ -72,27 +92,44 @@ public class Game extends JFrame {
 		add(topPanel, BorderLayout.NORTH);
 		add(botPanel, BorderLayout.SOUTH);
 		
-		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
-		menuBar.add(createFileMenu());
-		menuBar.add(createFormationMenu());
-		menuBar.add(createStatsMenu());
-		
-		setSize(1135,1500);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
+		board.repaint();
 	}
 	
+	public static Board getBoard() {
+		return board;
+	}
+
 	private JMenu createFileMenu() {
 		JMenu menu = new JMenu("File");
-		JMenu menu2 = new JMenu("Formations");
-		JMenu menu3 = new JMenu("Game Stats");
 		menu.add(createFileExit());
 		return menu;
 	}
 	
+	private JMenuItem createFormationItem() {
+		JMenuItem item = new JMenuItem("Choose Formation");
+		class MenuItemListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				formationFileChooser();
+			}
+		}	
+		item.addActionListener(new MenuItemListener());
+		return item;
+	}
+	
+	private void formationFileChooser() {
+		JFileChooser chooser = new JFileChooser();
+		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = chooser.getSelectedFile();
+			formationFile = selectedFile.getAbsolutePath();
+			loadFormationFiles();
+			board.setPlayerList(players);
+			board.repaint();
+		}
+	}
+	
 	private JMenu createFormationMenu() {
 		JMenu menu = new JMenu("Formations");
+		menu.add(createFormationItem());
 		return menu;
 	}
 	
@@ -249,8 +286,7 @@ public class Game extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		board = new Board("board.csv");
 		ball = new Ball();
-		Game game = new Game(board, ball, "formation.csv", "players.txt", "Chelsea", "Barcelona");
+		Game game = new Game("board.csv", ball, "formation.csv", "players.txt", "Chelsea", "Barcelona");
 	}
 }

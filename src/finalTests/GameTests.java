@@ -21,12 +21,11 @@ public class GameTests {
 	
 	@BeforeClass
 	public static void setUp() {
-		board = new Board("board.csv");
-		board.loadBoardConfig();
 		ball = new Ball();
 		
-		game = new Game(board, ball, "formation.csv", "players.txt", TEAM1NAME, TEAM2NAME);
+		game = new Game("board.csv", ball, "formation.csv", "players.txt", TEAM1NAME, TEAM2NAME);
 		game.loadConfigFiles();
+		board = game.getBoard();
 	}
 	
 	//Tests that players are properly loaded
