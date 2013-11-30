@@ -10,21 +10,24 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class Player {
-	public boolean hasBall = false;
+	public boolean hasBall;
 	private String name, team;
 	private int[] stats;
 	private Color teamColor;
 	private int jerseyNumber, currentLocation;
 	private Cell ballCell;
+	private int goalColumn;
 	
-	public Player(String name, int ballHandling, int strength, String color, int jerseyNumber) {
+	public Player(String name, int ballHandling, int strength, String color, int jerseyNumber, int goalCol) {
 		stats = new int[2];
 		currentLocation = 0;
+		hasBall = false;
 		this.name = name;
 		stats[0] = ballHandling;
 		stats[1] = strength;
 		this.teamColor = convertColor(color);
 		this.jerseyNumber = jerseyNumber;
+		this.goalColumn = goalCol;
 	}
 	
 	// Be sure to trim the color, we don't want spaces around the name
@@ -65,25 +68,41 @@ public class Player {
 	}
 
 	public void move(ArrayList<Cell> moveableCells, Board board, Ball ball) {
-//		this.ballCell = ballCell;
 		ArrayList<Cell> targetList = new ArrayList<Cell>(moveableCells);
 		
-		// this must be modified so that if the player can move onto the ball and steal it,
-		// they do. otherwise, the move method checks to see where the ball is and moves toward it
-		// whether that is along a row, column, or even diagonal (they can move on diagonals the way it is currently set up)
-		
-		//So here's what I did. eDistanceBetween returns the straight line distance between 2 points. If the player is next to the ball, he attempts to steal
-		//if he is not next to the ball, he checks to see if the target cell is closer to the ball and moves to it if he is, otherwise, he looks to the next target
-		for (Cell target : moveableCells) {
-			int targetIndex = board.calcIndex(target.getRow(), target.getCol());
-			if(ball.isNear(currentLocation)) {
-				stealBall(ball);
-			} else {
-				if (board.eDistanceBetween(targetIndex, ball.getLocation()) < board.eDistanceBetween(currentLocation, ball.getLocation())) {
-					setLocation(targetIndex);
+		if(!hasBall) {
+			//So here's what I did. eDistanceBetween returns the straight line distance between 2 points. If the player is next to the ball, he attempts to steal
+			//if he is not next to the ball, he checks to see if the target cell is closer to the ball and moves to it if he is, otherwise, he looks to the next target
+			for (Cell target : moveableCells) {
+				int targetIndex = board.calcIndex(target.getRow(), target.getCol());
+				if(ball.isNear(currentLocation)) {
+					stealBall(ball);
+					return;
+				} else {
+					if (board.eDistanceBetween(targetIndex, ball.getLocation()) < board.eDistanceBetween(currentLocation, ball.getLocation())) {
+						setLocation(targetIndex);
+						return;
+					}
 				}
+			board.repaint();
+			}
+		} else if(hasBall) {
+			int goalIndex = board.calcIndex(board.getRow(currentLocation), goalColumn);
+			for (Cell target : moveableCells) {
+				int targetIndex = board.calcIndex(target.getRow(), target.getCol());
+				if(Math.abs(goalColumn - board.getCol(currentLocation)) <= 2) {
+					ball.setLocation(goalIndex);
+					return;
+				} else {
+					if (board.eDistanceBetween(targetIndex, goalIndex) < board.eDistanceBetween(currentLocation, goalIndex)) {
+						setLocation(targetIndex);
+						return;
+					}
+				}
+			board.repaint();
 			}
 		}
+		
 	}
 	
 	public void passBall(Player passTo) {

@@ -18,8 +18,7 @@ import finalGame.Cell;
 import finalGame.Player;
 
 public class Board extends JPanel {
-	private int numRows;
-	private int numCols;
+	private int numRows, numCols;
 	private String layout;
 	private ArrayList<Cell> cells;
 	private ArrayList<Player> players;

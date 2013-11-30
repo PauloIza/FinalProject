@@ -70,6 +70,14 @@ public class Game extends JFrame {
 		
 		statsPanel = statsDisplayPanel();
 		runPlay = new JButton("GO!");
+		runPlay.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				playGame = true;
+				runGamePlay();				
+			}
+		});
 		
 		teamFormation = new JPanel();
 		JPanel topPanel = new JPanel();
@@ -117,7 +125,8 @@ public class Game extends JFrame {
 	}
 	
 	private void formationFileChooser() {
-		JFileChooser chooser = new JFileChooser();
+		JFileChooser chooser = new JFileChooser("C:\\Users\\Leah\\Documents\\F13\\CSCI306\\Workspace\\FinalProject");
+		chooser.setCurrentDirectory(chooser.getCurrentDirectory());
 		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = chooser.getSelectedFile();
 			formationFile = selectedFile.getAbsolutePath();
@@ -193,12 +202,17 @@ public class Game extends JFrame {
 				int handleStat = Integer.parseInt(line[1]);
 				int strengthStat = Integer.parseInt(line[2]);
 				int jerseyNum = Integer.parseInt(line[4]);
-				Player person = new Player(line[0], handleStat, strengthStat, line[3], jerseyNum);
-				players.add(person);
+				
+
 				if(line[3].equalsIgnoreCase("red")) {
+					Player person = new Player(line[0], handleStat, strengthStat, line[3], jerseyNum, 0);
 					team1.addPlayer(person);
+					players.add(person);
 				} else if(line[3].equalsIgnoreCase("blue")) {
+					Player person = new Player(line[0], handleStat, strengthStat, line[3], jerseyNum, 27);
 					team2.addPlayer(person);
+					players.add(person);
+					
 				}
 			} 
 		} catch (FileNotFoundException e) {
@@ -248,22 +262,41 @@ public class Game extends JFrame {
 	
 	public void runGamePlay() {
 		while(playGame) {
-			
+			move();
 		}
 	}
 	
 	public void move() {
-		Player tempPlayer = team1.getTeam().get(currentPlayer);
-		int playerLocation = tempPlayer.getLocation();
-		LinkedList<Integer> playerAdjacencies = board.getAdjacencyList(playerLocation);
-		ArrayList<Cell> playerAdjacentCells = new ArrayList<Cell>();
-		
-		for(int i : playerAdjacencies) {
-			playerAdjacentCells.add(board.getCellAt(i));
+		if(!board.getCellAt(ball.getLocation()).isGoal()) {
+			Player tempPlayer = team1.getTeam().get(currentPlayer);
+			int playerLocation = tempPlayer.getLocation();
+			LinkedList<Integer> playerAdjacencies = board.getAdjacencyList(playerLocation);
+			ArrayList<Cell> playerAdjacentCells = new ArrayList<Cell>();
+			
+			for(int i : playerAdjacencies) {
+				playerAdjacentCells.add(board.getCellAt(i));
+			}		
+			
+			Player tempPlayer2 = team2.getTeam().get(currentPlayer);
+			int playerLocation2 = tempPlayer2.getLocation();
+			LinkedList<Integer> playerAdjacencies2 = board.getAdjacencyList(playerLocation);
+			ArrayList<Cell> playerAdjacentCells2 = new ArrayList<Cell>();
+			
+			for(int i : playerAdjacencies2) {
+				playerAdjacentCells2.add(board.getCellAt(i));
+			}		
+			
+			tempPlayer.move(playerAdjacentCells, board, ball);
+			tempPlayer2.move(playerAdjacentCells2, board, ball);
+			
+			currentPlayer++;
+			if (currentPlayer == 10){
+				currentPlayer = 0;
+			}
 		}
-
-		
-		tempPlayer.move(playerAdjacentCells, board, ball);	}
+		else
+			playGame = false;
+	}
 	
 	public void saveGameStats() {
 		
