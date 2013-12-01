@@ -37,7 +37,6 @@ public class Game extends JFrame {
 	private int currentPlayer;
 	private JPanel team1Panel, team2Panel;
 	private JButton runPlay;
-	private JPanel teamFormation;
 	
 	public Game (String boardFileName, Ball ball, String formation, String playerFile, String team1, String team2) {
 		
@@ -66,7 +65,6 @@ public class Game extends JFrame {
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
 		menuBar.add(createFormationMenu());
-		menuBar.add(createStatsMenu());
 		
 		team1Panel = team1StatsDisplayPanel();
 		team2Panel = team2StatsDisplayPanel();
@@ -80,8 +78,7 @@ public class Game extends JFrame {
 				runGamePlay();				
 			}
 		});
-		
-		teamFormation = new JPanel();
+
 		JPanel topPanel = new JPanel();
 		JPanel botPanel = new JPanel();
 		
@@ -141,11 +138,6 @@ public class Game extends JFrame {
 	private JMenu createFormationMenu() {
 		JMenu menu = new JMenu("Formations");
 		menu.add(createFormationItem());
-		return menu;
-	}
-	
-	private JMenu createStatsMenu() {
-		JMenu menu = new JMenu("Game Stats");
 		return menu;
 	}
 	
@@ -327,10 +319,6 @@ public class Game extends JFrame {
 		}
 		else
 			playGame = false;
-	}
-	
-	public void saveGameStats() {
-		
 	}
 	
 	public ArrayList<Player> getPlayers() {
