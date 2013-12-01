@@ -13,16 +13,18 @@ public class Player {
 	public boolean hasBall;
 	private String name, team;
 	private int[] stats;
-	private Color teamColor;
+	protected Color teamColor;
 	private int jerseyNumber, currentLocation;
 	private Cell ballCell;
 	private int goalColumn;
+	private String colorName;
 	
 	public Player(String name, int ballHandling, int strength, String color, int jerseyNumber, int goalCol) {
 		stats = new int[2];
 		currentLocation = 0;
 		hasBall = false;
 		this.name = name;
+		this.colorName = color;
 		stats[0] = ballHandling;
 		stats[1] = strength;
 		this.teamColor = convertColor(color);
@@ -30,6 +32,9 @@ public class Player {
 		this.goalColumn = goalCol;
 	}
 	
+	public String getColorName() {
+		return colorName;
+	}
 	// Be sure to trim the color, we don't want spaces around the name
 	public Color convertColor(String strColor) {
 		Color color; 

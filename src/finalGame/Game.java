@@ -35,7 +35,7 @@ public class Game extends JFrame {
 	private Team team1, team2;
 	private boolean playGame;
 	private int currentPlayer;
-	private JPanel statsPanel;
+	private JPanel team1Panel, team2Panel;
 	private JButton runPlay;
 	private JPanel teamFormation;
 	
@@ -68,7 +68,9 @@ public class Game extends JFrame {
 		menuBar.add(createFormationMenu());
 		menuBar.add(createStatsMenu());
 		
-		statsPanel = statsDisplayPanel();
+		team1Panel = team1StatsDisplayPanel();
+		team2Panel = team2StatsDisplayPanel();
+		
 		runPlay = new JButton("GO!");
 		runPlay.addActionListener(new ActionListener() {
 			
@@ -94,8 +96,8 @@ public class Game extends JFrame {
 		setLayout(new GridLayout(2,0));
 		
 		topPanel.add(board);
-		topPanel.add(statsPanel);
-		botPanel.add(teamFormation);
+		topPanel.add(team1Panel);
+		botPanel.add(team2Panel);
 		botPanel.add(runPlay);
 		add(topPanel, BorderLayout.NORTH);
 		add(botPanel, BorderLayout.SOUTH);
@@ -147,31 +149,60 @@ public class Game extends JFrame {
 		return menu;
 	}
 	
-	private JPanel statsDisplayPanel() {
+	private JPanel team1StatsDisplayPanel() {
 		JPanel statsDisplayPanel = new JPanel();
 		
 		statsDisplayPanel.setLayout(new GridLayout(4,1));
 		
-		JLabel stats = new JLabel("Team Stats");
+		JLabel stats = new JLabel(team1.getTeamName() + " (Blue Team)");
 		statsDisplayPanel.add(stats);
 		
 		JPanel player1Panel = new JPanel();
 		player1Panel.setLayout(new GridLayout(1,2));
 		
-		player1Panel.setBorder(new TitledBorder (new EtchedBorder(), "Player 1"));
-		statsDisplayPanel.add(player1Panel);
+		for (Player p : players) {
+			System.out.println(p.getTeam());
+			if (p.getColorName().equalsIgnoreCase("blue")) {
+				JPanel playerPanel = new JPanel();
+				playerPanel.setBorder(new TitledBorder (new EtchedBorder(), p.getName()));
+				int tempStats[] = p.getStats();
+				String bh = Integer.toString(tempStats[0]);
+				String str = Integer.toString(tempStats[1]);
+				JTextField people = new JTextField("BH: " + bh + " " + "S: " + str);
+				people.setEditable(false);
+				playerPanel.add(people);
+				statsDisplayPanel.add(playerPanel);
+			}
+		}
 		
-		JPanel player2Panel = new JPanel();
-		player2Panel.setLayout(new GridLayout(1,2));
+		return statsDisplayPanel;
+	}
+	
+	private JPanel team2StatsDisplayPanel() {
+		JPanel statsDisplayPanel = new JPanel();
 		
-		player2Panel.setBorder(new TitledBorder (new EtchedBorder(), "Player 2"));
-		statsDisplayPanel.add(player2Panel);
+		statsDisplayPanel.setLayout(new GridLayout(4,1));
 		
-		JPanel player3Panel = new JPanel();
-		player3Panel.setLayout(new GridLayout(1,2));
+		JLabel stats = new JLabel(team2.getTeamName() + " (Red Team)");
+		statsDisplayPanel.add(stats);
 		
-		player3Panel.setBorder(new TitledBorder (new EtchedBorder(), "Player 3"));
-		statsDisplayPanel.add(player3Panel);
+		JPanel player1Panel = new JPanel();
+		player1Panel.setLayout(new GridLayout(1,2));
+		
+		for (Player p : players) {
+			System.out.println(p.getTeam());
+			if (p.getColorName().equalsIgnoreCase("red")) {
+				JPanel playerPanel = new JPanel();
+				playerPanel.setBorder(new TitledBorder (new EtchedBorder(), p.getName()));
+				int tempStats[] = p.getStats();
+				String bh = Integer.toString(tempStats[0]);
+				String str = Integer.toString(tempStats[1]);
+				JTextField people = new JTextField("BH: " + bh + " " + "S: " + str);
+				people.setEditable(false);
+				playerPanel.add(people);
+				statsDisplayPanel.add(playerPanel);
+			}
+		}
 		
 		return statsDisplayPanel;
 	}
