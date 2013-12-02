@@ -39,11 +39,6 @@ public class Game extends JFrame {
 	private JButton runPlay;
 	
 	public Game (String boardFileName, Ball ball, String formation, String playerFile, String team1, String team2) {
-		
-		setSize(1135,750);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
-		
 		this.board = new Board(boardFileName);
 		board.loadBoardConfig();
 		board.calcAdjacencies();
@@ -60,6 +55,9 @@ public class Game extends JFrame {
 		this.ball = ball;
 		board.setPlayerList(players);
 		board.setBall(ball);
+		
+		setSize(1135,750);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -78,7 +76,8 @@ public class Game extends JFrame {
 				runGamePlay();				
 			}
 		});
-
+		
+		board.repaint();
 		JPanel topPanel = new JPanel();
 		JPanel botPanel = new JPanel();
 		
@@ -98,8 +97,9 @@ public class Game extends JFrame {
 		botPanel.add(runPlay);
 		add(topPanel, BorderLayout.NORTH);
 		add(botPanel, BorderLayout.SOUTH);
-		
 		board.repaint();
+		
+		setVisible(true);
 	}
 	
 	public static Board getBoard() {
