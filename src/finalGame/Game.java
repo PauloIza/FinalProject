@@ -10,11 +10,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Array;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -37,6 +40,7 @@ public class Game extends JFrame {
 	private int currentPlayer;
 	private JPanel team1Panel, team2Panel;
 	private JButton runPlay;
+	private FormationsWindow formationsDialog;
 	
 	public Game (String boardFileName, Ball ball, String formation, String playerFile, String team1, String team2) {
 		this.board = new Board(boardFileName);
@@ -82,22 +86,25 @@ public class Game extends JFrame {
 		JPanel botPanel = new JPanel();
 		
 		topPanel.setLayout(new GridLayout(1,2));
-		topPanel.setMaximumSize(new Dimension(1135, 1000));
-	    topPanel.setMinimumSize(new Dimension(1135, 450));
-		topPanel.setPreferredSize(new Dimension(1135,500));
+		
+		topPanel.add(board, BorderLayout.EAST);
+		board.repaint();
+		topPanel.add(team1Panel, BorderLayout.WEST);
+	    
 		botPanel.setLayout(new GridLayout(1,1));
 		botPanel.setMaximumSize(new Dimension(1135, 100));
 	    botPanel.setMinimumSize(new Dimension(1135, 50));
 		botPanel.setPreferredSize(new Dimension(1135, 60));
-		setLayout(new GridLayout(2,0));
-		
-		topPanel.add(board);
-		topPanel.add(team1Panel);
 		botPanel.add(team2Panel);
 		botPanel.add(runPlay);
+		
+		setLayout(new GridLayout(0,1));
+		
 		add(topPanel, BorderLayout.NORTH);
 		add(botPanel, BorderLayout.SOUTH);
-		board.repaint();
+		
+		formationsDialog = new FormationsWindow();
+		formationsDialog.game = this;
 		
 		setVisible(true);
 	}
@@ -116,7 +123,7 @@ public class Game extends JFrame {
 		JMenuItem item = new JMenuItem("Choose Formation");
 		class MenuItemListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
-				formationFileChooser();
+				formationsDialog.setVisible(true);
 			}
 		}	
 		item.addActionListener(new MenuItemListener());
@@ -286,6 +293,7 @@ public class Game extends JFrame {
 	public void runGamePlay() {
 		while(playGame) {
 			move();
+			board.repaint();
 		}
 	}
 	
@@ -335,6 +343,12 @@ public class Game extends JFrame {
 	
 	public Ball getBall() {
 		return ball;
+	}
+	
+	public void setFormationFile(String formationFile) {
+		this.formationFile = formationFile;
+		loadFormationFiles();
+		board.repaint();
 	}
 	
 	public static void main(String[] args) {
