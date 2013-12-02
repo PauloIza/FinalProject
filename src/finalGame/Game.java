@@ -13,6 +13,7 @@ import java.lang.reflect.Array;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -130,17 +131,17 @@ public class Game extends JFrame {
 		return item;
 	}
 	
-	private void formationFileChooser() {
-		JFileChooser chooser = new JFileChooser("C:\\Users\\Leah\\Documents\\F13\\CSCI306\\Workspace\\FinalProject");
-		chooser.setCurrentDirectory(chooser.getCurrentDirectory());
-		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			File selectedFile = chooser.getSelectedFile();
-			formationFile = selectedFile.getAbsolutePath();
-			loadFormationFiles();
-			board.setPlayerList(players);
-			board.repaint();
-		}
-	}
+//	private void formationFileChooser() {
+//		JFileChooser chooser = new JFileChooser("C:\\Users\\Leah\\Documents\\F13\\CSCI306\\Workspace\\FinalProject");
+//		chooser.setCurrentDirectory(chooser.getCurrentDirectory());
+//		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+//			File selectedFile = chooser.getSelectedFile();
+//			formationFile = selectedFile.getAbsolutePath();
+//			loadFormationFiles();
+//			board.setPlayerList(players);
+//			board.repaint();
+//		}
+//	}
 	
 	private JMenu createFormationMenu() {
 		JMenu menu = new JMenu("Formations");
@@ -160,7 +161,7 @@ public class Game extends JFrame {
 		player1Panel.setLayout(new GridLayout(1,2));
 		
 		for (Player p : players) {
-			System.out.println(p.getTeam());
+//			System.out.println(p.getTeam());
 			if (p.getColorName().equalsIgnoreCase("blue")) {
 				JPanel playerPanel = new JPanel();
 				playerPanel.setBorder(new TitledBorder (new EtchedBorder(), p.getName()));
@@ -189,7 +190,7 @@ public class Game extends JFrame {
 		player1Panel.setLayout(new GridLayout(1,2));
 		
 		for (Player p : players) {
-			System.out.println(p.getTeam());
+//			System.out.println(p.getTeam());
 			if (p.getColorName().equalsIgnoreCase("red")) {
 				JPanel playerPanel = new JPanel();
 				playerPanel.setBorder(new TitledBorder (new EtchedBorder(), p.getName()));
@@ -292,38 +293,48 @@ public class Game extends JFrame {
 	
 	public void runGamePlay() {
 		while(playGame) {
-			move();
+//		for(int tempI = 0; tempI < 1; tempI++) {
+			move(team1);
+			board.repaint();
+			move(team2);
 			board.repaint();
 		}
 	}
 	
-	public void move() {
+	public void move(Team tempTeam) {
+		
 		if(!board.getCellAt(ball.getLocation()).isGoal()) {
-			Player tempPlayer = team1.getTeam().get(currentPlayer);
+			
+			Player tempPlayer = tempTeam.getTeam().get(currentPlayer);
 			int playerLocation = tempPlayer.getLocation();
 			LinkedList<Integer> playerAdjacencies = board.getAdjacencyList(playerLocation);
 			ArrayList<Cell> playerAdjacentCells = new ArrayList<Cell>();
+			boolean badLoc = false;
 			
 			for(int i : playerAdjacencies) {
-				playerAdjacentCells.add(board.getCellAt(i));
-			}		
-			
-			Player tempPlayer2 = team2.getTeam().get(currentPlayer);
-			int playerLocation2 = tempPlayer2.getLocation();
-			LinkedList<Integer> playerAdjacencies2 = board.getAdjacencyList(playerLocation);
-			ArrayList<Cell> playerAdjacentCells2 = new ArrayList<Cell>();
-			
-			for(int i : playerAdjacencies2) {
-				playerAdjacentCells2.add(board.getCellAt(i));
+				for(Player tP : players) {
+					if((tP.getLocation() == i)) {
+						badLoc = true;
+						break;
+					} else {
+						badLoc = false;
+					}
+				}
+				
+				if(!badLoc) {
+					playerAdjacentCells.add(board.getCellAt(i));
+				}
 			}		
 			
 			tempPlayer.move(playerAdjacentCells, board, ball);
-			tempPlayer2.move(playerAdjacentCells2, board, ball);
+			board.repaint();
 			
 			currentPlayer++;
 			if (currentPlayer == 10){
 				currentPlayer = 0;
 			}
+			
+			
 		}
 		else
 			playGame = false;
