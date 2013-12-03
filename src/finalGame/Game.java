@@ -58,7 +58,7 @@ public class Game extends JFrame {
 		Random rand = new Random();
 		currentPlayer1 = rand.nextInt(10) + 1;
 		currentPlayer2 = rand.nextInt(10) + 1;
-		firstTeam = rand.nextInt(1);
+		firstTeam = rand.nextInt(3);
 		
 		loadConfigFiles();
 
@@ -78,14 +78,6 @@ public class Game extends JFrame {
 		team2Panel = team2StatsDisplayPanel();
 		
 		runPlay = new JButton("GO!");
-		runPlay.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				playGame = true;
-				runGamePlay();				
-			}
-		});
 		
 		board.repaint();
 		topPanel = new JPanel();
@@ -113,6 +105,20 @@ public class Game extends JFrame {
 		formationsDialog.game = this;
 		
 		setVisible(true);
+		
+		runPlay.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				playGame = true;
+				while(playGame){
+					waiting();
+					runGamePlay();
+					board.repaint();
+					topPanel.repaint();
+				}
+			}
+		});
 	}
 	
 	public static Board getBoard() {
@@ -297,39 +303,51 @@ public class Game extends JFrame {
 //	}
 	
 	public void step() {
-		System.out.println("Stepping!");
-		currentPlayer1 = move(team1, currentPlayer1);
-		currentPlayer2 = move(team2, currentPlayer2);
-		playGame = false;
+		if(firstTeam == 0) {
+			currentPlayer1 = move(team1, currentPlayer1);
+			currentPlayer2 = move(team2, currentPlayer2);
+		} else if(firstTeam > 0) {	
+			currentPlayer2 = move(team2, currentPlayer2);
+			currentPlayer1 = move(team1, currentPlayer1);
+		}
+		
+		running = false;		
 	}
 	
 	public void runGamePlay() {
 		while(playGame && running) {
 //		for(int tempI = 0; tempI < 1; tempI++) {
 			step();
-			waiting();			
+			
+			if(!running)
+				waiting();
 		}
 	}
 	
 	public void waiting() {
-		System.out.println("Now waiting!");
+		int tempVar = 5;
 		running = false;
-		
-		try {
-		    Thread.sleep(100);
-		} catch(InterruptedException ex) {
-		    Thread.currentThread().interrupt();
+		while(!running){
+			System.out.println("In waiting");
+			try {
+			    Thread.sleep(20);
+			} catch(InterruptedException ex) {
+			    Thread.currentThread().interrupt();
+			}
+			
+			board.repaint();
+			
+			tempVar--;
+			
+			if(tempVar == 0) {
+				running = true;
+			}
 		}
 		
-		board.repaint();
-		updateTopPanel();
-		running = true;
 		playGame = true;
+		System.out.println("Leaving waiting, playGame is " + playGame);
 	}
-	
-	public void updateTopPanel() {
-		topPanel.repaint();
-	}
+
 	
 	public int move(Team tempTeam, int currentPlayer) {
 		
@@ -367,8 +385,8 @@ public class Game extends JFrame {
 			
 			if (currentPlayer == 11){
 				currentPlayer = 0;
-			}			
-			
+			}
+
 		}
 		else
 			playGame = false;
