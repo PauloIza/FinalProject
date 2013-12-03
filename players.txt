@@ -20,4 +20,3 @@ Joey,73,89,BLUE,10
 Joel,83,91,BLUE,16
 Jonas,77,93,BLUE,6
 Jordan,73,88,BLUE,18
-asdf,1,1,RED,1
