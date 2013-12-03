@@ -93,6 +93,7 @@ public class Player {
 			}
 		} else if(hasBall) {
 			int goalIndex = board.calcIndex(board.getRow(currentLocation), goalColumn);
+			
 			for (Cell target : moveableCells) {
 				int targetIndex = board.calcIndex(target.getRow(), target.getCol());
 				if(Math.abs(goalColumn - board.getCol(currentLocation)) <= 2) {
@@ -100,6 +101,7 @@ public class Player {
 					return;
 				} else {
 					if (board.eDistanceBetween(targetIndex, goalIndex) < board.eDistanceBetween(currentLocation, goalIndex)) {
+						ball.setLocation(targetIndex);
 						setLocation(targetIndex);
 						return;
 					}

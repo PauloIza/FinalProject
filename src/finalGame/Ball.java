@@ -7,10 +7,6 @@ public class Ball {
 		currentLocation = 0;
 	}
 	
-	public void drawBall() {
-		
-	}
-	
 	//returns true if the ball is near the index specified
 	public boolean isNear(int index) {
 		//directly on top of the ball
@@ -31,10 +27,6 @@ public class Ball {
 
 	public void setLocation(int currentLocation) {
 		this.currentLocation = currentLocation;
-	}
-
-	public void updateLocation() {
-		
 	}
 	
 	public int getLocation() {

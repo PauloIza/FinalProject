@@ -292,12 +292,17 @@ public class Game extends JFrame {
 //	}
 	
 	public void runGamePlay() {
-		while(playGame) {
-//		for(int tempI = 0; tempI < 1; tempI++) {
+//		while(playGame) {
+		for(int tempI = 0; tempI < 1; tempI++) {
+
+			
 			move(team1);
 			board.repaint();
+			
 			move(team2);
 			board.repaint();
+			
+//			try {java.lang.Thread.sleep(1); } catch (Exception ex) {}
 		}
 	}
 	
@@ -315,7 +320,6 @@ public class Game extends JFrame {
 				for(Player tP : players) {
 					if((tP.getLocation() == i)) {
 						badLoc = true;
-						break;
 					} else {
 						badLoc = false;
 					}
@@ -327,13 +331,15 @@ public class Game extends JFrame {
 			}		
 			
 			tempPlayer.move(playerAdjacentCells, board, ball);
-			board.repaint();
 			
 			currentPlayer++;
+			
 			if (currentPlayer == 10){
 				currentPlayer = 0;
-			}
+			}			
 			
+//			try {java.lang.Thread.sleep(2); } catch (Exception ex) {}
+			board.repaint();
 			
 		}
 		else
