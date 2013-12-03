@@ -41,7 +41,7 @@ public class Game extends JFrame {
 	private boolean playGame, running;
 	private int currentPlayer1, currentPlayer2, firstTeam;
 	private JPanel topPanel, botPanel, team1Panel, team2Panel;
-	private JButton runPlay;
+	private JButton runPlay, resetPlay;
 	private FormationsWindow formationsDialog;
 	
 	public Game (String boardFileName, Ball ball, String formation, String playerFile, String team1, String team2) {
@@ -78,6 +78,7 @@ public class Game extends JFrame {
 		team2Panel = team2StatsDisplayPanel();
 		
 		runPlay = new JButton("GO!");
+		resetPlay = new JButton("Reset");
 		
 		board.repaint();
 		topPanel = new JPanel();
@@ -86,14 +87,11 @@ public class Game extends JFrame {
 		topPanel.setLayout(new GridLayout(1,2));
 		
 		topPanel.add(board, BorderLayout.EAST);
-		board.repaint();
 		topPanel.add(runPlay, BorderLayout.WEST);
 	    
 		botPanel.setLayout(new GridLayout(1,1));
 		botPanel.add(team2Panel);
 		botPanel.add(team1Panel);
-		
-		
 		
 		add(topPanel, BorderLayout.CENTER);
 		add(botPanel, BorderLayout.SOUTH);
@@ -108,11 +106,28 @@ public class Game extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				playGame = true;
+				topPanel.remove(runPlay);
+				topPanel.add(resetPlay, BorderLayout.WEST);
+				repaint();
 				while(playGame){
 					runGamePlay();
 					board.repaint();
 					topPanel.repaint();
 				}
+			}
+		});
+		
+		resetPlay.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				topPanel.remove(resetPlay);
+				topPanel.add(runPlay, BorderLayout.WEST);
+				dispose();
+				Game.main(null);
+				
+				repaint();
+				
 			}
 		});
 	}
@@ -243,11 +258,11 @@ public class Game extends JFrame {
 				
 
 				if(line[3].equalsIgnoreCase("red")) {
-					Player person = new Player(line[0], handleStat, strengthStat, line[3], jerseyNum, 0);
+					Player person = new Player(line[0], handleStat, strengthStat, line[3], jerseyNum, 27);
 					team1.addPlayer(person);
 					players.add(person);
 				} else if(line[3].equalsIgnoreCase("blue")) {
-					Player person = new Player(line[0], handleStat, strengthStat, line[3], jerseyNum, 27);
+					Player person = new Player(line[0], handleStat, strengthStat, line[3], jerseyNum, 0);
 					team2.addPlayer(person);
 					players.add(person);
 					
