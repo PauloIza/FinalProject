@@ -64,10 +64,10 @@ public class Game extends JFrame {
 		currentPlayer1 = rand.nextInt(10) + 1;
 		currentPlayer2 = rand.nextInt(10) + 1;
 		firstTeam = rand.nextInt(3);
+		this.ball = ball;
 		
 		loadConfigFiles();
-
-		this.ball = ball;
+		
 		board.setPlayerList(players);
 		board.setBall(ball);
 		
