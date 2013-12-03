@@ -6,9 +6,13 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,6 +23,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -138,6 +143,7 @@ public class Game extends JFrame {
 
 	private JMenu createFileMenu() {
 		JMenu menu = new JMenu("File");
+		menu.add(createCreatePlayer());
 		menu.add(createFileExit());
 		return menu;
 	}
@@ -152,18 +158,6 @@ public class Game extends JFrame {
 		item.addActionListener(new MenuItemListener());
 		return item;
 	}
-	
-//	private void formationFileChooser() {
-//		JFileChooser chooser = new JFileChooser("C:\\Users\\Leah\\Documents\\F13\\CSCI306\\Workspace\\FinalProject");
-//		chooser.setCurrentDirectory(chooser.getCurrentDirectory());
-//		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-//			File selectedFile = chooser.getSelectedFile();
-//			formationFile = selectedFile.getAbsolutePath();
-//			loadFormationFiles();
-//			board.setPlayerList(players);
-//			board.repaint();
-//		}
-//	}
 	
 	private JMenu createFormationMenu() {
 		JMenu menu = new JMenu("Formations");
@@ -238,6 +232,54 @@ public class Game extends JFrame {
 		}	
 		item.addActionListener(new MenuItemListener());
 		return item;
+	}
+	
+	private JMenuItem createCreatePlayer() {
+		JMenuItem item = new JMenuItem("Create New Player");
+		class MenuItemListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				newPlayer();
+			}
+		}	
+		item.addActionListener(new MenuItemListener());
+		return item;
+	}
+	
+	public void newPlayer() {
+		JPanel creation = new JPanel(new GridLayout(0,2));
+		JLabel name = new JLabel("Enter Player name: ");
+		JTextField nameEnter = new JTextField();
+		JLabel ballHandling = new JLabel("Enter Ball Handle stat: ");
+		JTextField ballHandlingEnter = new JTextField();
+		JLabel strength= new JLabel("Enter Strength stat: ");
+		JTextField strengthEnter = new JTextField();
+		JLabel jNum = new JLabel("Enter Jersey Number: ");
+		JTextField jNumEnter = new JTextField();
+		String[] teams = {"RED", "BLUE"};
+		JComboBox teamBox = new JComboBox(teams);
+		JLabel teamLabel = new JLabel("Choose a team: ");
+
+		Object[] messageOptions = {creation, name, nameEnter, ballHandling, ballHandlingEnter, 
+								   strength, strengthEnter, jNum, jNumEnter , teamLabel, teamBox};
+
+		Object[] options = { "OK", "Cancel" };
+		Object selection = JOptionPane.showOptionDialog(this, messageOptions, "Create New Player",
+		         JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		
+		String newName = nameEnter.getText();
+		int newballHandling = Integer.parseInt(ballHandlingEnter.getText());
+		int newStrength = Integer.parseInt(strengthEnter.getText());
+		int newjNum = Integer.parseInt(jNumEnter.getText());
+		String team = teamBox.getSelectedItem().toString();
+		
+		try {
+		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(playerFile, true)));
+		    out.println(newName + "," + newballHandling + "," + newStrength + "," + team + "," + newjNum);
+		    out.close();
+		    repaint();
+		} catch (IOException e) {
+		    //oh noes!
+		}
 	}
 	
 	public void loadConfigFiles() {
