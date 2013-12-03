@@ -1,3 +1,8 @@
+/* 
+ * Final Project
+ * Team: Eleven Wise Monkeys
+ * Team Members: Leah Moldauer, Paulo Iza, Danny Victor
+ */
 package finalGame;
 
 import java.awt.Graphics;

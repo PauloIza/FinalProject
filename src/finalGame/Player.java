@@ -1,3 +1,9 @@
+/* 
+ * Final Project
+ * Team: Eleven Wise Monkeys
+ * Team Members: Leah Moldauer, Paulo Iza, Danny Victor
+ */
+
 package finalGame;
 
 import java.awt.BasicStroke;
@@ -16,7 +22,7 @@ public class Player {
 	protected Color teamColor;
 	private int jerseyNumber, currentLocation;
 	private Cell ballCell;
-	private int goalColumn;
+	private int goalColumn, scores;
 	private String colorName;
 	
 	public Player(String name, int ballHandling, int strength, String color, int jerseyNumber, int goalCol) {
@@ -30,6 +36,11 @@ public class Player {
 		this.teamColor = convertColor(color);
 		this.jerseyNumber = jerseyNumber;
 		this.goalColumn = goalCol;
+		scores = 0;
+	}
+	
+	public int scored() {
+		return scores;
 	}
 	
 	public String getColorName() {
@@ -98,6 +109,7 @@ public class Player {
 				int targetIndex = board.calcIndex(target.getRow(), target.getCol());
 				if(Math.abs(goalColumn - board.getCol(currentLocation)) <= 2) {
 					ball.setLocation(goalIndex);
+					scores++;
 					return;
 				} else {
 					if (board.eDistanceBetween(targetIndex, goalIndex) < board.eDistanceBetween(currentLocation, goalIndex)) {

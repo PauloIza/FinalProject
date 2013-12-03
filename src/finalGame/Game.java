@@ -1,3 +1,9 @@
+/* 
+ * Final Project
+ * Team: Eleven Wise Monkeys
+ * Team Members: Leah Moldauer, Paulo Iza, Danny Victor
+ */
+
 package finalGame;
 
 import java.awt.BorderLayout;
@@ -22,7 +28,9 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
+
 import javax.swing.JButton;
+import javax.swing.Timer;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -43,7 +51,7 @@ public class Game extends JFrame {
 	private static Ball ball;
 	private ArrayList<Player> players;
 	private Team team1, team2;
-	private boolean playGame, running;
+	private boolean playGame, running, resetBoard;
 	private int currentPlayer1, currentPlayer2, firstTeam;
 	private JPanel topPanel, botPanel, team1Panel, team2Panel;
 	private JButton runPlay, resetPlay;
@@ -60,6 +68,7 @@ public class Game extends JFrame {
 		players = new ArrayList<Player>();
 		playGame = false;
 		running = true;
+		resetBoard = false;
 		Random rand = new Random();
 		currentPlayer1 = rand.nextInt(10) + 1;
 		currentPlayer2 = rand.nextInt(10) + 1;
@@ -83,16 +92,13 @@ public class Game extends JFrame {
 		team2Panel = team2StatsDisplayPanel();
 		
 		runPlay = new JButton("GO!");
-		resetPlay = new JButton("Reset");
+		resetPlay = new JButton("Reset board");
 		
 		board.repaint();
+		
 		topPanel = new JPanel();
+		setupTopPanel();
 		botPanel = new JPanel();
-		
-		topPanel.setLayout(new GridLayout(1,2));
-		
-		topPanel.add(board, BorderLayout.EAST);
-		topPanel.add(runPlay, BorderLayout.WEST);
 	    
 		botPanel.setLayout(new GridLayout(1,1));
 		botPanel.add(team2Panel);
@@ -110,31 +116,56 @@ public class Game extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				playGame = true;
-				topPanel.remove(runPlay);
-				topPanel.add(resetPlay, BorderLayout.WEST);
-				repaint();
-				while(playGame){
-					runGamePlay();
-					board.repaint();
-					topPanel.repaint();
+
+				if(!resetBoard) {	
+					
+					playGame = true;
+
+					runPlay.setText("Reset Board");
+					runPlay.repaint();
+					resetBoard = true;
+					
+					repaint();
+					int tempI = 0;
+					
+					while(playGame){
+						running = true;
+						
+						while(running) {
+							runGamePlay();
+
+							board.repaint();
+							setupTopPanel();
+							repaint();
+							topPanel.repaint();
+
+						}
+						
+//						waiting();
+					}
+
+					
+				} else if (resetBoard) {
+					
+					runPlay.setText("RUN!");
+					runPlay.repaint();
+					dispose();
+					
+					Game.main(null);
+					repaint();
+					
 				}
 			}
 		});
+	}
+
+	public void setupTopPanel() {
+		board.repaint();
+		topPanel.setLayout(new GridLayout(1,2));
 		
-		resetPlay.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				topPanel.remove(resetPlay);
-				topPanel.add(runPlay, BorderLayout.WEST);
-				dispose();
-				Game.main(null);
-				
-				repaint();
-				
-			}
-		});
+		topPanel.add(board, BorderLayout.EAST);
+		topPanel.add(runPlay, BorderLayout.WEST);
+		topPanel.repaint();
 	}
 	
 	public static Board getBoard() {
@@ -184,7 +215,7 @@ public class Game extends JFrame {
 				int tempStats[] = p.getStats();
 				String bh = Integer.toString(tempStats[0]);
 				String str = Integer.toString(tempStats[1]);
-				JTextField people = new JTextField("BH: " + bh + " " + "S: " + str);
+				JTextField people = new JTextField("Ball handling: " + bh + " Strength: " + str);
 				people.setEditable(false);
 				playerPanel.add(people);
 				statsDisplayPanel.add(playerPanel);
@@ -213,7 +244,7 @@ public class Game extends JFrame {
 				int tempStats[] = p.getStats();
 				String bh = Integer.toString(tempStats[0]);
 				String str = Integer.toString(tempStats[1]);
-				JTextField people = new JTextField("BH: " + bh + " " + "S: " + str);
+				JTextField people = new JTextField("Ball handling: " + bh + " Strength: " + str);
 				people.setEditable(false);
 				playerPanel.add(people);
 				statsDisplayPanel.add(playerPanel);
@@ -285,7 +316,6 @@ public class Game extends JFrame {
 	public void loadConfigFiles() {
 		loadPlayerFiles();
 		loadFormationFiles();
-//		loadPlayFiles();
 	}
 	
 	public void loadPlayerFiles() {
@@ -351,14 +381,19 @@ public class Game extends JFrame {
 		}
 	}
 	
-//	public void loadPlayFiles() {
-//		
-//	}
+	public void runGamePlay() {
+		while(playGame && running) {
+			step();
+		}
+	}
 	
+	
+	// step() allows us to choose which team (randomly) goes first, then moves the current player in that team before the next team.
 	public void step() {
 		if(firstTeam == 0) {
 			currentPlayer1 = move(team1, currentPlayer1);
 			currentPlayer2 = move(team2, currentPlayer2);
+			System.out.println("Stepping");
 			board.repaint();
 		} else if(firstTeam > 0) {	
 			currentPlayer2 = move(team2, currentPlayer2);
@@ -369,42 +404,48 @@ public class Game extends JFrame {
 		running = false;		
 	}
 	
-	public void runGamePlay() {
-//		while(playGame && running) {
-		for(int tempI = 0; tempI < 1; tempI++) {
-			step();			
-		}
-	}
+
 	
 	public void waiting() {
-		int tempVar = 5;
+		int tempVar = 1;
 		running = false;
 		while(!running){
-			System.out.println("In waiting");
-			try {
-			    Thread.sleep(20);
-			} catch(InterruptedException ex) {
-			    Thread.currentThread().interrupt();
-			}
+			
+			Timer timed = new Timer(1000, new TimerListener());
+			timed.start();
+			
+//			try {
+//			    Thread.sleep(2500);
+//			} catch(InterruptedException ex) {
+//			    Thread.currentThread().interrupt();
+//			}
 			
 			board.repaint();
+			setupTopPanel();
+			repaint();
 			
-			tempVar--;
+//			tempVar--;
+//			
+//			if(tempVar == 0) {
+//				running = true;
+//				break;
+//			}
 			
-			if(tempVar == 0) {
-				running = true;
-			}
 		}
 		
 		playGame = true;
-		System.out.println("Leaving waiting, playGame is " + playGame);
 	}
 
+	private class TimerListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			running = true;
+		}
+	}
 	
 	public int move(Team tempTeam, int currentPlayer) {
 		
 		if(!board.getCellAt(ball.getLocation()).isGoal()) {
-			
+			System.out.println("in move function!");
 			Player tempPlayer = tempTeam.getTeam().get(currentPlayer);
 			int playerLocation = tempPlayer.getLocation();
 			LinkedList<Integer> playerAdjacencies = board.getAdjacencyList(playerLocation);
