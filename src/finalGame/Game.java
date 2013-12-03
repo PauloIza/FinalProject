@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.Scanner;
 
 import javax.swing.JButton;
@@ -38,7 +39,7 @@ public class Game extends JFrame {
 	private ArrayList<Player> players;
 	private Team team1, team2;
 	private boolean playGame;
-	private int currentPlayer;
+	private int currentPlayer1, currentPlayer2;
 	private JPanel team1Panel, team2Panel;
 	private JButton runPlay;
 	private FormationsWindow formationsDialog;
@@ -53,7 +54,9 @@ public class Game extends JFrame {
 		this.team2 = new Team(team2);
 		players = new ArrayList<Player>();
 		playGame = false;
-		currentPlayer = 0;
+		Random rand = new Random();
+		currentPlayer1 = rand.nextInt(10) + 1;
+		currentPlayer2 = rand.nextInt(10) + 1;
 		
 		loadConfigFiles();
 
@@ -292,21 +295,21 @@ public class Game extends JFrame {
 //	}
 	
 	public void runGamePlay() {
-//		while(playGame) {
-		for(int tempI = 0; tempI < 1; tempI++) {
-
+		while(playGame) {
+//		for(int tempI = 0; tempI < 1; tempI++) {
 			
-			move(team1);
+			currentPlayer1 = move(team1, currentPlayer1);
+			
 			board.repaint();
 			
-			move(team2);
+			currentPlayer2 = move(team2, currentPlayer2);
 			board.repaint();
 			
 //			try {java.lang.Thread.sleep(1); } catch (Exception ex) {}
 		}
 	}
 	
-	public void move(Team tempTeam) {
+	public int move(Team tempTeam, int currentPlayer) {
 		
 		if(!board.getCellAt(ball.getLocation()).isGoal()) {
 			
@@ -318,23 +321,41 @@ public class Game extends JFrame {
 			
 			for(int i : playerAdjacencies) {
 				for(Player tP : players) {
-					if((tP.getLocation() == i)) {
+					if(tP.getLocation() == i) {
 						badLoc = true;
-					} else {
-						badLoc = false;
+						System.out.println(tempPlayer.getName() + " is trying to "
+								+ "move into " + i + ", but " + tP.getName() + " is already in this location! " + badLoc);
 					}
+				}
+				
+				if (board.getCellAt(i).isOutOfBounds() || board.getCellAt(i).isGoal()) {
+					badLoc = true;
+					System.out.println("Out of bounds or is a goal!!");
 				}
 				
 				if(!badLoc) {
 					playerAdjacentCells.add(board.getCellAt(i));
 				}
-			}		
+				
+				badLoc = false;
+			}
 			
+			System.out.println();
+			
+			for(Cell tc : playerAdjacentCells) {
+				
+				System.out.println(tc.getRow() + ", " +  tc.getCol() + ". " + board.calcIndex(tc.getRow(), tc.getCol()));
+			}
+			
+			System.out.println();
+			
+			System.out.println(tempPlayer.getLocation());
 			tempPlayer.move(playerAdjacentCells, board, ball);
-			
+			System.out.println(tempPlayer.getLocation() + " " + tempTeam.getTeam().get(currentPlayer).getLocation());
+			System.out.println();
 			currentPlayer++;
 			
-			if (currentPlayer == 10){
+			if (currentPlayer == 11){
 				currentPlayer = 0;
 			}			
 			
@@ -344,6 +365,8 @@ public class Game extends JFrame {
 		}
 		else
 			playGame = false;
+		
+		return currentPlayer;
 	}
 	
 	public ArrayList<Player> getPlayers() {

@@ -91,6 +91,7 @@ public class Player {
 				}
 			board.repaint();
 			}
+			
 		} else if(hasBall) {
 			int goalIndex = board.calcIndex(board.getRow(currentLocation), goalColumn);
 			

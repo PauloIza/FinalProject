@@ -384,8 +384,8 @@ public class Board extends JPanel {
 			g.setColor(tempPlayer.getTeam());
 			g.fillOval(tempCol*20, tempRow*20, 15, 15);
 			
-			g.setColor(Color.BLACK);
-			g.drawString(Integer.toString(tempPlayer.getJerseyNumber()), tempCol*20, tempRow*21);
+//			g.setColor(Color.BLACK);
+//			g.drawString(Integer.toString(tempPlayer.getJerseyNumber()), tempCol*20, tempRow*21);
 		}
 	}
 	
