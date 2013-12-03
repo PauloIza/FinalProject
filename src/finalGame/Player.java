@@ -89,7 +89,6 @@ public class Player {
 						return;
 					}
 				}
-			board.repaint();
 			}
 			
 		} else if(hasBall) {
@@ -107,7 +106,6 @@ public class Player {
 						return;
 					}
 				}
-			board.repaint();
 			}
 		}
 		

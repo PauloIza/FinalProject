@@ -38,9 +38,9 @@ public class Game extends JFrame {
 	private static Ball ball;
 	private ArrayList<Player> players;
 	private Team team1, team2;
-	private boolean playGame;
-	private int currentPlayer1, currentPlayer2;
-	private JPanel team1Panel, team2Panel;
+	private boolean playGame, running;
+	private int currentPlayer1, currentPlayer2, firstTeam;
+	private JPanel topPanel, botPanel, team1Panel, team2Panel;
 	private JButton runPlay;
 	private FormationsWindow formationsDialog;
 	
@@ -54,9 +54,11 @@ public class Game extends JFrame {
 		this.team2 = new Team(team2);
 		players = new ArrayList<Player>();
 		playGame = false;
+		running = true;
 		Random rand = new Random();
 		currentPlayer1 = rand.nextInt(10) + 1;
 		currentPlayer2 = rand.nextInt(10) + 1;
+		firstTeam = rand.nextInt(1);
 		
 		loadConfigFiles();
 
@@ -86,8 +88,8 @@ public class Game extends JFrame {
 		});
 		
 		board.repaint();
-		JPanel topPanel = new JPanel();
-		JPanel botPanel = new JPanel();
+		topPanel = new JPanel();
+		botPanel = new JPanel();
 		
 		topPanel.setLayout(new GridLayout(1,2));
 		
@@ -294,19 +296,39 @@ public class Game extends JFrame {
 //		
 //	}
 	
+	public void step() {
+		System.out.println("Stepping!");
+		currentPlayer1 = move(team1, currentPlayer1);
+		currentPlayer2 = move(team2, currentPlayer2);
+		playGame = false;
+	}
+	
 	public void runGamePlay() {
-		while(playGame) {
+		while(playGame && running) {
 //		for(int tempI = 0; tempI < 1; tempI++) {
-			
-			currentPlayer1 = move(team1, currentPlayer1);
-			
-			board.repaint();
-			
-			currentPlayer2 = move(team2, currentPlayer2);
-			board.repaint();
-			
-//			try {java.lang.Thread.sleep(1); } catch (Exception ex) {}
+			step();
+			waiting();			
 		}
+	}
+	
+	public void waiting() {
+		System.out.println("Now waiting!");
+		running = false;
+		
+		try {
+		    Thread.sleep(100);
+		} catch(InterruptedException ex) {
+		    Thread.currentThread().interrupt();
+		}
+		
+		board.repaint();
+		updateTopPanel();
+		running = true;
+		playGame = true;
+	}
+	
+	public void updateTopPanel() {
+		topPanel.repaint();
 	}
 	
 	public int move(Team tempTeam, int currentPlayer) {
@@ -323,14 +345,12 @@ public class Game extends JFrame {
 				for(Player tP : players) {
 					if(tP.getLocation() == i) {
 						badLoc = true;
-						System.out.println(tempPlayer.getName() + " is trying to "
-								+ "move into " + i + ", but " + tP.getName() + " is already in this location! " + badLoc);
 					}
 				}
 				
 				if (board.getCellAt(i).isOutOfBounds() || board.getCellAt(i).isGoal()) {
 					badLoc = true;
-					System.out.println("Out of bounds or is a goal!!");
+
 				}
 				
 				if(!badLoc) {
@@ -339,28 +359,15 @@ public class Game extends JFrame {
 				
 				badLoc = false;
 			}
-			
-			System.out.println();
-			
-			for(Cell tc : playerAdjacentCells) {
-				
-				System.out.println(tc.getRow() + ", " +  tc.getCol() + ". " + board.calcIndex(tc.getRow(), tc.getCol()));
-			}
-			
-			System.out.println();
-			
-			System.out.println(tempPlayer.getLocation());
+
 			tempPlayer.move(playerAdjacentCells, board, ball);
-			System.out.println(tempPlayer.getLocation() + " " + tempTeam.getTeam().get(currentPlayer).getLocation());
-			System.out.println();
+			board.repaint();
+
 			currentPlayer++;
 			
 			if (currentPlayer == 11){
 				currentPlayer = 0;
 			}			
-			
-//			try {java.lang.Thread.sleep(2); } catch (Exception ex) {}
-			board.repaint();
 			
 		}
 		else

@@ -25,7 +25,6 @@ public class FormationsWindow extends JDialog{
 		Path currentRelativePath = Paths.get("");
 		s = currentRelativePath.toAbsolutePath().toString();
 
-		
 		setTitle("Formation Chooser");
 		setSize(600, 450);
 		setLayout(new GridLayout(0, 1));
