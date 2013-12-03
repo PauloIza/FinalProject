@@ -226,8 +226,6 @@ public class Board extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		g.setColor(Color.DARK_GRAY);
-		g.fillRect(0, 0, 550, 900);
 		
 		for (Cell c : cells){
 			c.draw(g, this);
@@ -365,8 +363,6 @@ public class Board extends JPanel {
 				g.drawOval(14*20-50, 11*20-50, 100, 100);
 			}
 		}
-		g.setColor(Color.BLACK);
-		g.drawRect(0, 0, 559, 700);
 		
 		paintPlayers(g);
 		paintBall(g);

@@ -66,7 +66,7 @@ public class Game extends JFrame {
 		board.setPlayerList(players);
 		board.setBall(ball);
 		
-		setSize(1135,750);
+		setSize(1135,715);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -87,18 +87,15 @@ public class Game extends JFrame {
 		
 		topPanel.add(board, BorderLayout.EAST);
 		board.repaint();
-		topPanel.add(team1Panel, BorderLayout.WEST);
+		topPanel.add(runPlay, BorderLayout.WEST);
 	    
 		botPanel.setLayout(new GridLayout(1,1));
-		botPanel.setMaximumSize(new Dimension(1135, 100));
-	    botPanel.setMinimumSize(new Dimension(1135, 50));
-		botPanel.setPreferredSize(new Dimension(1135, 60));
 		botPanel.add(team2Panel);
-		botPanel.add(runPlay);
+		botPanel.add(team1Panel);
 		
-		setLayout(new GridLayout(0,1));
 		
-		add(topPanel, BorderLayout.NORTH);
+		
+		add(topPanel, BorderLayout.CENTER);
 		add(botPanel, BorderLayout.SOUTH);
 		
 		formationsDialog = new FormationsWindow();
@@ -306,21 +303,25 @@ public class Game extends JFrame {
 		if(firstTeam == 0) {
 			currentPlayer1 = move(team1, currentPlayer1);
 			currentPlayer2 = move(team2, currentPlayer2);
+			board.repaint();
 		} else if(firstTeam > 0) {	
 			currentPlayer2 = move(team2, currentPlayer2);
 			currentPlayer1 = move(team1, currentPlayer1);
+			board.repaint();
 		}
 		
 		running = false;		
 	}
 	
 	public void runGamePlay() {
-		while(playGame && running) {
-//		for(int tempI = 0; tempI < 1; tempI++) {
+//		while(playGame && running) {
+		for(int tempI = 0; tempI < 1; tempI++) {
 			step();
+			waiting();
 			
 			if(!running)
 				waiting();
+			
 		}
 	}
 	
