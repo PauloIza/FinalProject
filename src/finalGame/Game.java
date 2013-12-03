@@ -109,7 +109,6 @@ public class Game extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				playGame = true;
 				while(playGame){
-					waiting();
 					runGamePlay();
 					board.repaint();
 					topPanel.repaint();
@@ -316,12 +315,7 @@ public class Game extends JFrame {
 	public void runGamePlay() {
 //		while(playGame && running) {
 		for(int tempI = 0; tempI < 1; tempI++) {
-			step();
-			waiting();
-			
-			if(!running)
-				waiting();
-			
+			step();			
 		}
 	}
 	
