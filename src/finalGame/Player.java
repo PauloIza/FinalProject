@@ -93,7 +93,6 @@ public class Player {
 				int targetIndex = board.calcIndex(target.getRow(), target.getCol());
 				if(ball.isNear(currentLocation)) {
 					stealBall(ball);
-					System.out.println(ball.isNear(ball.getLocation()));
 					return;
 				} else {
 					if (board.eDistanceBetween(targetIndex, ball.getLocation()) < board.eDistanceBetween(currentLocation, ball.getLocation())) {
@@ -108,7 +107,7 @@ public class Player {
 			
 			for (Cell target : moveableCells) {
 				int targetIndex = board.calcIndex(target.getRow(), target.getCol());
-				if(Math.abs(goalColumn - board.getCol(currentLocation)) <= 1) {
+				if(Math.abs(goalColumn - board.getCol(currentLocation)) <= 2) {
 					ball.setLocation(goalIndex);
 					scores++;
 					return;
@@ -136,12 +135,15 @@ public class Player {
 			//randomly generates a number 0-100, if that number is less than .25*ballHandling of the player, they successfully stole the ball
 			Random rand = new Random();
 			int stealChance = rand.nextInt(100);
-			if ((stealChance < (stats[0]/4)) && (stealChance > 0)) {
+			if ((stealChance < (stats[0]/2)) && (stealChance > 0)) {
+
 				hasBall = true;
 			} else {
 				hasBall = false;
 			}
-			
-		} 
+
+		} else {
+			hasBall = false;
+		}
 	}
 }

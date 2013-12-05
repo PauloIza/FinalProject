@@ -421,14 +421,6 @@ public class Game extends JFrame {
 			}
 
 			tempPlayer.move(playerAdjacentCells, board, ball);
-//			if(tempPlayer.hasBall) {
-//				for(Player tempBob : players) {
-//					tempBob.hasBall = false;
-//				}
-//				
-//				tempPlayer.hasBall = true;
-//			}
-			
 			board.repaint();
 
 			currentPlayer++;
@@ -438,7 +430,7 @@ public class Game extends JFrame {
 			}
 
 		}
-		
+
 		else
 			playGame = false;
 		
