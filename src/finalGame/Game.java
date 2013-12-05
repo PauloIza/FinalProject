@@ -115,33 +115,24 @@ public class Game extends JFrame {
 		
 		t = new Timer(50, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!resetBoard) {	
 
-					playGame = true;
+				playGame = true;
 
-					runPlay.setText("Reset Board");
-					runPlay.repaint();
-					//resetBoard = true;
+				runPlay.setText("Reset Board");
+				runPlay.repaint();
 
-					repaint();
-					int tempI = 0;
+				if(playGame){
+					running = true;
 
-					if(playGame){
-						running = true;
+					while(running) {
+						runGamePlay();
 
-						while(running) {
-							runGamePlay();
+						board.repaint();
 
-							board.repaint();
-//							setupTopPanel();
-//							repaint();
-//							topPanel.repaint();
-
-						}
-
-//						waiting();
 					}
+
 				}
+				resetBoard = true;
 			}
 		});
 		
@@ -151,33 +142,7 @@ public class Game extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				if(!resetBoard) {
-					t.start();
-//					playGame = true;
-//
-//					runPlay.setText("Reset Board");
-//					runPlay.repaint();
-//					resetBoard = true;
-//					
-//					repaint();
-//					int tempI = 0;
-//					
-//					while(playGame){
-//						running = true;
-//						
-//						while(running) {
-//							runGamePlay();
-//
-//							board.repaint();
-//							setupTopPanel();
-//							repaint();
-//							topPanel.repaint();
-//
-//						}
-//						
-////						waiting();
-//					}
-//
-//					
+					t.start();					
 				} else if (resetBoard) {
 					t.stop();
 					runPlay.setText("RUN!");
