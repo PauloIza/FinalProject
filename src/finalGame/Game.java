@@ -51,6 +51,7 @@ public class Game extends JFrame {
 	private static Ball ball;
 	private ArrayList<Player> players;
 	private Team team1, team2;
+	private Timer t;
 	private boolean playGame, running, resetBoard;
 	private int currentPlayer1, currentPlayer2, firstTeam;
 	private JPanel topPanel, botPanel, team1Panel, team2Panel;
@@ -112,41 +113,73 @@ public class Game extends JFrame {
 		
 		setVisible(true);
 		
-		runPlay.addActionListener(new ActionListener() {
-			
-			@Override
+		t = new Timer(50, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				if(!resetBoard) {	
-					
+
 					playGame = true;
 
 					runPlay.setText("Reset Board");
 					runPlay.repaint();
-					resetBoard = true;
-					
+					//resetBoard = true;
+
 					repaint();
 					int tempI = 0;
-					
-					while(playGame){
+
+					if(playGame){
 						running = true;
-						
+
 						while(running) {
 							runGamePlay();
 
 							board.repaint();
-							setupTopPanel();
-							repaint();
-							topPanel.repaint();
+//							setupTopPanel();
+//							repaint();
+//							topPanel.repaint();
 
 						}
-						
+
 //						waiting();
 					}
-
-					
+				}
+			}
+		});
+		
+		runPlay.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if(!resetBoard) {
+					t.start();
+//					playGame = true;
+//
+//					runPlay.setText("Reset Board");
+//					runPlay.repaint();
+//					resetBoard = true;
+//					
+//					repaint();
+//					int tempI = 0;
+//					
+//					while(playGame){
+//						running = true;
+//						
+//						while(running) {
+//							runGamePlay();
+//
+//							board.repaint();
+//							setupTopPanel();
+//							repaint();
+//							topPanel.repaint();
+//
+//						}
+//						
+////						waiting();
+//					}
+//
+//					
 				} else if (resetBoard) {
-					
+					t.stop();
 					runPlay.setText("RUN!");
 					runPlay.repaint();
 					dispose();
@@ -158,6 +191,8 @@ public class Game extends JFrame {
 			}
 		});
 	}
+	
+	
 
 	public void setupTopPanel() {
 		board.repaint();
@@ -202,14 +237,11 @@ public class Game extends JFrame {
 		statsDisplayPanel.setLayout(new GridLayout(4,1));
 		
 		statsDisplayPanel.setBorder(new TitledBorder (new EtchedBorder(), team1.getTeamName() + " (Blue Team)"));
-		//JLabel stats = new JLabel(team1.getTeamName() + " (Blue Team)");
-		//statsDisplayPanel.add(stats);
 		
 		JPanel player1Panel = new JPanel();
 		player1Panel.setLayout(new GridLayout(1,2));
 		
 		for (Player p : players) {
-//			System.out.println(p.getTeam());
 			if (p.getColorName().equalsIgnoreCase("blue")) {
 				JPanel playerPanel = new JPanel();
 				playerPanel.setBorder(new TitledBorder (new EtchedBorder(), p.getName()));
@@ -232,8 +264,6 @@ public class Game extends JFrame {
 		statsDisplayPanel.setLayout(new GridLayout(4,1));
 		
 		statsDisplayPanel.setBorder(new TitledBorder (new EtchedBorder(), team2.getTeamName() + " (Red Team)"));
-//		JLabel stats = new JLabel(team2.getTeamName() + " (Red Team)");
-//		statsDisplayPanel.add(stats);
 		
 		JPanel player1Panel = new JPanel();
 		player1Panel.setLayout(new GridLayout(1,2));
