@@ -28,7 +28,6 @@ public class FormationsWindow extends JDialog{
 		setTitle("Formation Chooser");
 		setSize(600, 450);
 		setLayout(new GridLayout(0, 1));
-		
 		iconButtons();
 		
 		add(formation442Button);

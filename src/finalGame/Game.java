@@ -113,7 +113,7 @@ public class Game extends JFrame {
 		
 		setVisible(true);
 		
-		t = new Timer(50, new ActionListener() {
+		t = new Timer(250, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				playGame = true;
@@ -234,7 +234,6 @@ public class Game extends JFrame {
 		player1Panel.setLayout(new GridLayout(1,2));
 		
 		for (Player p : players) {
-//			System.out.println(p.getTeam());
 			if (p.getColorName().equalsIgnoreCase("red")) {
 				JPanel playerPanel = new JPanel();
 				playerPanel.setBorder(new TitledBorder (new EtchedBorder(), p.getName()));
@@ -390,7 +389,6 @@ public class Game extends JFrame {
 		if(firstTeam == 0) {
 			currentPlayer1 = move(team1, currentPlayer1);
 			currentPlayer2 = move(team2, currentPlayer2);
-			System.out.println("Stepping");
 			board.repaint();
 		} else if(firstTeam > 0) {	
 			currentPlayer2 = move(team2, currentPlayer2);
@@ -442,7 +440,6 @@ public class Game extends JFrame {
 	public int move(Team tempTeam, int currentPlayer) {
 		
 		if(!board.getCellAt(ball.getLocation()).isGoal()) {
-			System.out.println("in move function!");
 			Player tempPlayer = tempTeam.getTeam().get(currentPlayer);
 			int playerLocation = tempPlayer.getLocation();
 			LinkedList<Integer> playerAdjacencies = board.getAdjacencyList(playerLocation);
