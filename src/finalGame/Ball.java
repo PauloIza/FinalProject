@@ -1,3 +1,9 @@
+/* 
+ * Final Project
+ * Team: Eleven Wise Monkeys
+ * Team Members: Leah Moldauer, Paulo Iza, Danny Victor
+ */
+
 package finalGame;
 
 public class Ball {
@@ -5,10 +11,6 @@ public class Ball {
 	
 	public Ball() {
 		currentLocation = 0;
-	}
-	
-	public void drawBall() {
-		
 	}
 	
 	//returns true if the ball is near the index specified
@@ -28,16 +30,12 @@ public class Ball {
 		else
 			return false;
 	}
-	
-	public int getLocation() {
-		return currentLocation;
-	}
 
 	public void setLocation(int currentLocation) {
 		this.currentLocation = currentLocation;
 	}
-
-	public void updateLocation() {
-		
+	
+	public int getLocation() {
+		return currentLocation;
 	}
 }

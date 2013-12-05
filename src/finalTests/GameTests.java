@@ -21,12 +21,11 @@ public class GameTests {
 	
 	@BeforeClass
 	public static void setUp() {
-		board = new Board("board.csv");
-		board.loadBoardConfig();
 		ball = new Ball();
 		
-		game = new Game(board, ball, "formation.csv", "players.txt", TEAM1NAME, TEAM2NAME);
+		game = new Game("board.csv", ball, "formation.csv", "players.txt", TEAM1NAME, TEAM2NAME);
 		game.loadConfigFiles();
+		board = game.getBoard();
 	}
 	
 	//Tests that players are properly loaded
@@ -34,33 +33,24 @@ public class GameTests {
 	public void testPlayers() {
 		assertTrue(game.getPlayers().get(0).getName().equals("John"));
 		assertTrue(game.getPlayers().get(1).getTeam().equals(Color.RED));
-		assertTrue(game.getPlayers().get(2).getStats()[0] == 95);
-		assertTrue(game.getPlayers().get(3).getJerseyNumber() == 9);
+		assertTrue(game.getPlayers().get(2).getStats()[0] == 69);
+		assertTrue(game.getPlayers().get(3).getJerseyNumber() == 17);
 	}
 	
 	//Tests that teams are properly set up
 	@Test
 	public void testTeams() {
 		assertTrue(game.getTeam1().getTeamName().equals(TEAM1NAME));
-		assertTrue(game.getTeam2().getTeam().get(0).getName().equals("Jacob"));
+		assertTrue(game.getTeam2().getTeam().get(0).getName().equals("Jeff"));
 	}
 	
 	//Tests that the players on/in the teams are starting in the correct place (formation test)
 	@Test
 	public void testFormationStart() {
-		assertEquals(game.getTeam1().getTeam().get(0).getLocation(), board.calcIndex(10,1));
-		assertEquals(game.getTeam2().getTeam().get(1).getLocation(), board.calcIndex(11,26));
+		assertEquals(game.getTeam1().getTeam().get(0).getLocation(), board.calcIndex(6,1));
+		assertEquals(game.getTeam2().getTeam().get(1).getLocation(), board.calcIndex(7,26));
 		assertEquals(game.getBall().getLocation(), board.calcIndex(10, 11));
 		
-	}
-	
-	//Tests that players end at the right point
-	@Test
-	public void testMove() {
-		game.runGamePlay();
-		assertEquals(game.getPlayers().get(0).getLocation(), board.calcIndex(10, 1));
-		assertEquals(game.getPlayers().get(1).getLocation(), board.calcIndex(11, 1));
-		assertEquals(game.getPlayers().get(2).getLocation(), board.calcIndex(10, 26));
 	}
 	
 	//Tests player passing ball to teammate
@@ -77,7 +67,7 @@ public class GameTests {
 	public void testIsNear() {
 		Ball testBall = new Ball();
 		testBall.setLocation(board.calcIndex(10,11));
-		Player testPlayer = new Player("Tester", 90, 80, "PINK", 1);
+		Player testPlayer = new Player("Tester", 90, 80, "PINK", 1, 0);
 		//testPlayer location is currently 0,0;
 		assertFalse(testBall.isNear(testPlayer.getLocation()));
 		//Move to 10,10
@@ -92,7 +82,7 @@ public class GameTests {
 	@Test
 	public void testStealBall() {
 		int stealSuccess = 0;
-		Player testPlayer = new Player("Tester", 90, 80, "PINK", 1);
+		Player testPlayer = new Player("Tester", 90, 80, "PINK", 1, 0);
 		Ball testBall = new Ball();
 		testBall.setLocation(board.calcIndex(10,11));
 		

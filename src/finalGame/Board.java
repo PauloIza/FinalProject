@@ -1,5 +1,15 @@
+/* 
+ * Final Project
+ * Team: Eleven Wise Monkeys
+ * Team Members: Leah Moldauer, Paulo Iza, Danny Victor
+ */
+
 package finalGame;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -8,27 +18,42 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Board {
-	private int numRows;
-	private int numCols;
+import javax.swing.JPanel;
+
+import finalGame.Cell;
+import finalGame.Player;
+
+public class Board extends JPanel {
+	private int numRows, numCols;
 	private String layout;
 	private ArrayList<Cell> cells;
+	private ArrayList<Player> players;
+	private Ball ball;
 	private Map<Character, String> fieldCells;
 	private Map<Integer, LinkedList<Integer>> adjacentCells;
 	
 	public Board(String layout) {
 		this.layout = layout;
+		players = new ArrayList<Player>();
+		ball = new Ball();
 		numRows = 0;
 		numCols = 0;
 		cells = new ArrayList<Cell>();
 		adjacentCells = new HashMap<Integer, LinkedList<Integer>>();
 	}
 	
+	public void setPlayerList(ArrayList<Player> playerList) {
+		this.players = playerList;
+	}
+	
+	public void setBall(Ball tempBall) {
+		this.ball = tempBall;
+	}
+	
 	public void loadBoardConfig(){
 		try{
 			FileReader reader = new FileReader(layout);
 			Scanner scn = new Scanner(reader);
-			
 			while(scn.hasNextLine()) {
 				String line[] = scn.nextLine().split(",");
 				int columnCount = 0;
@@ -43,7 +68,6 @@ public class Board {
 					} else if(cell.equalsIgnoreCase("o")) {
 						cells.add(new OutOfBoundsCell(numRows, columnCount++));
 					}
-					
 				}
 				
 				if(numRows == 0) {
@@ -204,4 +228,188 @@ public class Board {
 		
 		return c;
 	}
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		
+		for (Cell c : cells){
+			c.draw(g, this);
+			int x = c.getCol()*20;
+			int y = c.getRow()*20;
+			int currentCellIndex = calcIndex(c.getRow(), c.getCol());
+			if (c.isField()) {
+				if (getCellAt(currentCellIndex-getNumColumns()).isOutOfBounds()) {
+					g.setColor(Color.WHITE);
+					g.drawLine(x, y, x + 20, y);
+				}
+				if (getCellAt(currentCellIndex + 1).isOutOfBounds()) {
+					g.setColor(Color.WHITE);
+					g.drawLine(x + 20 - 1, y, x + 20 - 1, y + 20);
+				}
+				if (getCellAt(currentCellIndex + getNumColumns()).isOutOfBounds()) {
+					g.setColor(Color.WHITE);
+					g.drawLine(x, y + 20 - 1, x + 20, y + 20 - 1);
+				}
+				
+				if (getCellAt(currentCellIndex - 1).isOutOfBounds()) {
+					g.setColor(Color.WHITE);
+					g.drawLine(x, y, x, y + 20);
+				}
+				if (c.getCol() == 14) {
+					g.setColor(Color.WHITE);
+					g.drawLine(x, y, x, y + 20);
+				}
+				if (c.getCol() == 6) {
+					if (c.getRow() > 5 && c.getRow() < 16) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x+10, y, x+10, y + 20);
+					}
+				}
+				if (c.getCol() == 21) {
+					if (c.getRow() > 5 && c.getRow() < 16) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x+10, y, x+10, y + 20);
+					}
+				}
+				if (c.getRow() == 6) {
+					if (c.getCol() > 0 && c.getCol() < 6) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x, y, x + 20, y);
+					}
+					if (c.getCol() > 21 && c.getCol() < 27) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x, y, x + 20, y);
+					}
+					if (c.getCol() == 6) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x, y, x + 10, y);
+					}
+					if (c.getCol() == 21){
+						g.setColor(Color.WHITE);
+						g.drawLine(x+10, y, x + 20, y);
+					}
+				}
+				if (c.getRow() == 16) {
+					if (c.getCol() > 0 && c.getCol() < 6) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x, y, x + 20, y);
+					}
+					if (c.getCol() > 21 && c.getCol() < 27) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x, y, x + 20, y);
+					}
+					if (c.getCol() == 6) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x, y, x + 10, y);
+					}
+					if (c.getCol() == 21){
+						g.setColor(Color.WHITE);
+						g.drawLine(x+10, y, x + 20, y);
+					}
+				}
+				if (c.getRow() == 8) {
+					if (c.getCol() > 0 && c.getCol() < 3) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x, y, x + 20, y);
+					}
+					if (c.getCol() > 24 && c.getCol() < 27) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x, y, x + 20, y);
+					}
+					if (c.getCol() == 3) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x, y, x + 10, y);
+					}
+					if (c.getCol() == 24){
+						g.setColor(Color.WHITE);
+						g.drawLine(x+10, y, x + 20, y);
+					}
+				}
+				
+				if (c.getRow() == 14) {
+					if (c.getCol() > 0 && c.getCol() < 3) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x, y, x + 20, y);
+					}
+					if (c.getCol() > 24 && c.getCol() < 27) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x, y, x + 20, y);
+					}
+					if (c.getCol() == 3) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x, y, x + 10, y);
+					}
+					if (c.getCol() == 24){
+						g.setColor(Color.WHITE);
+						g.drawLine(x+10, y, x + 20, y);
+					}
+				}
+
+				if (c.getCol() == 3) {
+					if (c.getRow() > 7 && c.getRow() < 14) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x+10, y, x+10, y + 20);		
+					}
+				}
+				
+				if (c.getCol() == 24) {
+					if (c.getRow() > 7 && c.getRow() < 14) {
+						g.setColor(Color.WHITE);
+						g.drawLine(x+10, y, x+10, y + 20);		
+					}
+				}
+				
+				g.drawOval(14*20-2, 11*20 - 2, 4, 4);
+				g.fillOval(14*20-2, 11*20 - 2, 4, 4);
+				g.drawOval(5*20-2, 11*20 - 2, 4, 4);
+				g.fillOval(5*20-2, 11*20 - 2, 4, 4);
+				g.drawOval(23*20-2, 11*20 - 2, 4, 4);
+				g.fillOval(23*20-2, 11*20 - 2, 4, 4);
+				g.drawOval(14*20-50, 11*20-50, 100, 100);
+			}
+		}
+		
+		paintPlayers(g);
+		paintBall(g);
+	}
+	
+	public void paintPlayers(Graphics g) {
+		for(Player tempPlayer : players) {
+			int tempRow = getRow(tempPlayer.getLocation());
+			int tempCol = getCol(tempPlayer.getLocation());
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setStroke(new BasicStroke(3));
+			
+			if (tempPlayer.getColorName().equalsIgnoreCase("red")) {				
+				g2.setColor(Color.BLACK);
+				g2.drawRect(tempCol*20, tempRow*20, 15, 15);
+				
+				g.setColor(tempPlayer.getTeam());
+				g.fillRect(tempCol*20, tempRow*20, 15, 15);
+			} else if (tempPlayer.getColorName().equalsIgnoreCase("blue")) {
+				g2.setColor(Color.BLACK);
+				g2.drawOval(tempCol*20, tempRow*20, 15, 15);
+				
+				g.setColor(tempPlayer.getTeam());
+				g.fillOval(tempCol*20, tempRow*20, 15, 15);
+			}
+			
+//			g.setColor(Color.WHITE);
+//			g.drawString(Integer.toString(tempPlayer.getJerseyNumber()), tempCol*20, tempRow*21);
+		}
+	}
+	
+	public void paintBall(Graphics g) {
+		int tempRow = getRow(ball.getLocation());
+		int tempCol = getCol(ball.getLocation());
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setStroke(new BasicStroke(3));
+		g2.setColor(Color.BLACK);
+		g2.drawOval(tempCol*20, tempRow*20, 9, 9);
+		
+		g.setColor(Color.WHITE);
+		g.fillOval(tempCol*20, tempRow*20, 9, 9);
+	}
+	
 }

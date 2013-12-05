@@ -1,5 +1,10 @@
 package finalGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
+import finalGame.Board;
+
 public class FieldCell extends Cell {
 	private boolean isCorner;
 	
@@ -24,4 +29,12 @@ public class FieldCell extends Cell {
 		return isCorner;
 	}
 	
+	@Override
+	void draw(Graphics g, Board b) {
+		int x = getCol()*getSize();
+		int y = getRow()*getSize();
+		
+		g.setColor(Color.GREEN);
+		g.fillRect(x, y, getSize(), getSize());
+	}
 }
