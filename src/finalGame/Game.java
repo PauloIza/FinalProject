@@ -114,7 +114,7 @@ public class Game extends JFrame {
 		
 		setVisible(true);
 		
-		t = new Timer(50, new ActionListener() {
+		t = new Timer(25, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				playGame = true;

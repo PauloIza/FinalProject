@@ -25,9 +25,7 @@ public class Ball {
 		//diagonal
 		else if (currentLocation == index + 28 + 1 || currentLocation == index + 28 - 1 || currentLocation == index - 28 + 1 || currentLocation == index - 28 - 1) {
 			return true;
-		}
-		
-		else
+		} else
 			return false;
 	}
 
