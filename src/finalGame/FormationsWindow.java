@@ -26,7 +26,7 @@ public class FormationsWindow extends JDialog{
 		s = currentRelativePath.toAbsolutePath().toString();
 
 		setTitle("Formation Chooser");
-		setSize(600, 450);
+		setSize(600, 950);
 		setLayout(new GridLayout(0, 1));
 		iconButtons();
 		

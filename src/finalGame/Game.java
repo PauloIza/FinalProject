@@ -28,8 +28,9 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
-
 import javax.swing.JButton;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.Timer;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -81,7 +82,7 @@ public class Game extends JFrame {
 		board.setPlayerList(players);
 		board.setBall(ball);
 		
-		setSize(1135,745);
+		setSize(1135,625);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -113,7 +114,7 @@ public class Game extends JFrame {
 		
 		setVisible(true);
 		
-		t = new Timer(250, new ActionListener() {
+		t = new Timer(50, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				playGame = true;
@@ -209,13 +210,9 @@ public class Game extends JFrame {
 		for (Player p : players) {
 			if (p.getColorName().equalsIgnoreCase("blue")) {
 				JPanel playerPanel = new JPanel();
-				playerPanel.setBorder(new TitledBorder (new EtchedBorder(), p.getName()));
-				int tempStats[] = p.getStats();
-				String bh = Integer.toString(tempStats[0]);
-				String str = Integer.toString(tempStats[1]);
-				JTextField people = new JTextField("Ball handling: " + bh + " Strength: " + str);
-				people.setEditable(false);
-				playerPanel.add(people);
+				JTextArea pText = new JTextArea(p.getName());
+				pText.setEditable(false);
+				playerPanel.add(pText);
 				statsDisplayPanel.add(playerPanel);
 			}
 		}
@@ -236,13 +233,9 @@ public class Game extends JFrame {
 		for (Player p : players) {
 			if (p.getColorName().equalsIgnoreCase("red")) {
 				JPanel playerPanel = new JPanel();
-				playerPanel.setBorder(new TitledBorder (new EtchedBorder(), p.getName()));
-				int tempStats[] = p.getStats();
-				String bh = Integer.toString(tempStats[0]);
-				String str = Integer.toString(tempStats[1]);
-				JTextField people = new JTextField("Ball handling: " + bh + " Strength: " + str);
-				people.setEditable(false);
-				playerPanel.add(people);
+				JTextArea pText = new JTextArea(p.getName());
+				pText.setEditable(false);
+				playerPanel.add(pText);
 				statsDisplayPanel.add(playerPanel);
 			}
 		}
@@ -397,44 +390,6 @@ public class Game extends JFrame {
 		}
 		
 		running = false;		
-	}
-	
-
-	
-	public void waiting() {
-		int tempVar = 1;
-		running = false;
-		while(!running){
-			
-			Timer timed = new Timer(1000, new TimerListener());
-			timed.start();
-			
-//			try {
-//			    Thread.sleep(2500);
-//			} catch(InterruptedException ex) {
-//			    Thread.currentThread().interrupt();
-//			}
-			
-			board.repaint();
-			setupTopPanel();
-			repaint();
-			
-//			tempVar--;
-//			
-//			if(tempVar == 0) {
-//				running = true;
-//				break;
-//			}
-			
-		}
-		
-		playGame = true;
-	}
-
-	private class TimerListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			running = true;
-		}
 	}
 	
 	public int move(Team tempTeam, int currentPlayer) {

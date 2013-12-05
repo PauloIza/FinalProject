@@ -380,13 +380,22 @@ public class Board extends JPanel {
 			int tempCol = getCol(tempPlayer.getLocation());
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setStroke(new BasicStroke(3));
-			g2.setColor(Color.BLACK);
-			g2.drawOval(tempCol*20, tempRow*20, 15, 15);
 			
-			g.setColor(tempPlayer.getTeam());
-			g.fillOval(tempCol*20, tempRow*20, 15, 15);
+			if (tempPlayer.getColorName().equalsIgnoreCase("red")) {				
+				g2.setColor(Color.BLACK);
+				g2.drawRect(tempCol*20, tempRow*20, 15, 15);
+				
+				g.setColor(tempPlayer.getTeam());
+				g.fillRect(tempCol*20, tempRow*20, 15, 15);
+			} else if (tempPlayer.getColorName().equalsIgnoreCase("blue")) {
+				g2.setColor(Color.BLACK);
+				g2.drawOval(tempCol*20, tempRow*20, 15, 15);
+				
+				g.setColor(tempPlayer.getTeam());
+				g.fillOval(tempCol*20, tempRow*20, 15, 15);
+			}
 			
-//			g.setColor(Color.BLACK);
+//			g.setColor(Color.WHITE);
 //			g.drawString(Integer.toString(tempPlayer.getJerseyNumber()), tempCol*20, tempRow*21);
 		}
 	}
@@ -402,4 +411,5 @@ public class Board extends JPanel {
 		g.setColor(Color.WHITE);
 		g.fillOval(tempCol*20, tempRow*20, 9, 9);
 	}
+	
 }
