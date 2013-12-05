@@ -87,7 +87,7 @@ public class Player {
 		ArrayList<Cell> targetList = new ArrayList<Cell>(moveableCells);
 		
 		if(!hasBall) {
-			//So here's what I did. eDistanceBetween returns the straight line distance between 2 points. If the player is next to the ball, he attempts to steal
+			//eDistanceBetween returns the straight line distance between 2 points. If the player is next to the ball, he attempts to steal
 			//if he is not next to the ball, he checks to see if the target cell is closer to the ball and moves to it if he is, otherwise, he looks to the next target
 			for (Cell target : moveableCells) {
 				int targetIndex = board.calcIndex(target.getRow(), target.getCol());

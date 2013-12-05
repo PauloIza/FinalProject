@@ -80,7 +80,7 @@ public class Game extends JFrame {
 		board.setPlayerList(players);
 		board.setBall(ball);
 		
-		setSize(1135,715);
+		setSize(1135,745);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -201,8 +201,9 @@ public class Game extends JFrame {
 		
 		statsDisplayPanel.setLayout(new GridLayout(4,1));
 		
-		JLabel stats = new JLabel(team1.getTeamName() + " (Blue Team)");
-		statsDisplayPanel.add(stats);
+		statsDisplayPanel.setBorder(new TitledBorder (new EtchedBorder(), team1.getTeamName() + " (Blue Team)"));
+		//JLabel stats = new JLabel(team1.getTeamName() + " (Blue Team)");
+		//statsDisplayPanel.add(stats);
 		
 		JPanel player1Panel = new JPanel();
 		player1Panel.setLayout(new GridLayout(1,2));
@@ -230,8 +231,9 @@ public class Game extends JFrame {
 		
 		statsDisplayPanel.setLayout(new GridLayout(4,1));
 		
-		JLabel stats = new JLabel(team2.getTeamName() + " (Red Team)");
-		statsDisplayPanel.add(stats);
+		statsDisplayPanel.setBorder(new TitledBorder (new EtchedBorder(), team2.getTeamName() + " (Red Team)"));
+//		JLabel stats = new JLabel(team2.getTeamName() + " (Red Team)");
+//		statsDisplayPanel.add(stats);
 		
 		JPanel player1Panel = new JPanel();
 		player1Panel.setLayout(new GridLayout(1,2));
